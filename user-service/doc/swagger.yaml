@@ -1,0 +1,58 @@
+definitions:
+  common.Error500:
+    properties:
+      code:
+        example: 500
+        type: integer
+      data:
+        type: string
+      error:
+        example: Internal Server Error
+        type: string
+    type: object
+  dto.UserDto:
+    properties:
+      created_date:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: List all existing users
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/dto.UserDto'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Error500'
+      summary: List all existing users
+      tags:
+      - user
+swagger: "2.0"
