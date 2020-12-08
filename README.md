@@ -17,16 +17,16 @@
 - [x] Mono Repo
 - [x] Multi language
 - [x] Docker
-- [] Docker Compose
-- [] Kubernetes
-- [] Unit Test
-- [] Integration Test
-- [] Mock server integration 
-- [] Common validation and errors
-- [] Share library across service
-- [] CRUD with pagination support
-- [] Mongo db integration
-- [] Elastic Search integration
+- [ ] Docker Compose
+- [ ] Kubernetes
+- [ ] Unit Test
+- [ ] Integration Test
+- [ ] Mock server integration 
+- [ ] Common validation and errors
+- [ ] Share library across service
+- [ ] CRUD with pagination support
+- [ ] Mongo db integration
+- [ ] Elastic Search integration
 
 ###  Go to specific microservice
 ```sh
