@@ -14,7 +14,7 @@ import (
 // @Produce  json
 // @Param Authorization header string true "Token"
 // @Failure 500 {object} common.Error500
-// @Success 200 {array} dto.UserDtos
+// @Success 200 {object} swagdto.UserResponse
 // @Router /users [get]
 func UserList(c *gin.Context) {
 

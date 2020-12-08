@@ -15,6 +15,13 @@ func init() {
 	common.LoadEnv()
 }
 
+// @title UserManagement Service API Document
+// @version 1.0
+// @description List APIs of UserManagement Service
+// @termsOfService http://swagger.io/terms/
+
+// @host 127.0.0.1:8081
+// @BasePath /v1
 func main() {
 
 	appConf := config.AppConfig()

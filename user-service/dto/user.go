@@ -1,36 +1,18 @@
 package dto
 
 import (
+	"micro/model"
 	"time"
 )
 
 type UserDtos []*UserDto
 
 type UserDto struct {
-	ID          uint   `json:"id"`
-	Name        string `json:"name"`
-	Email       string `json:"email"`
+	ID          uint   `json:"id" example:"1"`
+	Name        string `json:"name" example:"bob"`
+	Email       string `json:"email" example:"bob@gmail.com"`
 	CreatedDate string `json:"created_date"`
-	FirstName   string `json:"firstName"`
-}
-
-func (b User) ToDto() *UserDto {
-	return &UserDto{
-		ID:          b.ID,
-		Name:        b.Name,
-		Email:       b.Email,
-		CreatedDate: b.CreatedDate.Format("2006-01-02"),
-		FirstName:   b.FirstName,
-	}
-}
-
-func (bs Users) ToDto() UserDtos {
-	dtos := make([]*UserDto, len(bs))
-	for i, b := range bs {
-		dtos[i] = b.ToDto()
-	}
-
-	return dtos
+	FirstName   string `json:"firstName" example:"Bob"`
 }
 
 type UserForm struct {
@@ -40,13 +22,13 @@ type UserForm struct {
 	FirstName   string `json:"image_url" form:"url"`
 }
 
-func (f *UserForm) ToModel() (*User, error) {
+func (f *UserForm) ToModel() (*model.User, error) {
 	pubDate, err := time.Parse("2006-01-02", f.CreatedDate)
 	if err != nil {
 		return nil, err
 	}
 
-	return &User{
+	return &model.User{
 		Name:        f.Name,
 		Email:       f.Email,
 		CreatedDate: pubDate,

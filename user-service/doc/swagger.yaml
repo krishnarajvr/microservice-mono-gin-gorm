@@ -1,3 +1,4 @@
+basePath: /v1
 definitions:
   common.Error500:
     properties:
@@ -15,16 +16,37 @@ definitions:
       created_date:
         type: string
       email:
+        example: bob@gmail.com
         type: string
       firstName:
+        example: Bob
         type: string
       id:
+        example: 1
         type: integer
       name:
+        example: bob
         type: string
     type: object
+  swagdto.UserResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.UserDto'
+        type: array
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+host: 127.0.0.1:8081
 info:
   contact: {}
+  description: List APIs of UserManagement Service
+  termsOfService: http://swagger.io/terms/
+  title: UserManagement Service API Document
+  version: "1.0"
 paths:
   /users:
     get:
@@ -43,11 +65,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              items:
-                $ref: '#/definitions/dto.UserDto'
-              type: array
-            type: array
+            $ref: '#/definitions/swagdto.UserResponse'
         "500":
           description: Internal Server Error
           schema:
