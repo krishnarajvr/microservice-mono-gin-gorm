@@ -20,7 +20,6 @@ func LoadEnv() {
 		fmt.Print("Not able to get current working director")
 	}
 	// loads values from .env into the system
-	fmt.Println("Current directory : " + dir + "/.env")
 	if err := godotenv.Load(dir + "/.env"); err != nil {
 		fmt.Print("No .env file found")
 	}

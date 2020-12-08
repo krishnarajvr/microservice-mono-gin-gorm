@@ -2,6 +2,8 @@ package main
 
 import (
 	"micro/app/database"
+	"micro/app/locale"
+	"micro/app/middleware"
 	"micro/common"
 	"micro/config"
 	"micro/route"
@@ -17,10 +19,13 @@ func main() {
 
 	appConf := config.AppConfig()
 	// initializes database
-	dbs, _ := database.Initialize()
-
+	db, _ := database.Initialize()
+	lang := locale.Locale{}
 	app := gin.Default() // create gin app
-	app.Use(database.Inject(dbs))
+	app.Use(middleware.LoggerToFile())
+	app.Use(gin.Recovery())
+	app.Use(database.Inject(db))
+	app.Use(locale.Inject(lang.New("el-GR")))
 	route.Apply(app)                   // apply api router
 	app.Run(":" + appConf.Server.Port) // listen to given port
 }
