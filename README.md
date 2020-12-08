@@ -16,6 +16,7 @@
 - [x] Seperate controller
 - [x] Mono Repo
 - [x] Multi language
+- [x] Json logger
 - [x] Docker
 - [ ] Docker Compose
 - [ ] Kubernetes
