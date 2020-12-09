@@ -28,6 +28,7 @@
 - [ ] CRUD with pagination support
 - [ ] Mongo db integration
 - [ ] Elastic Search integration
+- [ ] Makefile for commands
 
 ###  Go to specific microservice
 ```sh
@@ -58,14 +59,19 @@
 ├── .env  # Environment configuration
 └── user-service
     ├── app  # App specific folders
-    │   └── database
-    │       ├── adapter
-    │       │   ├── db
-    │       │   │   └── db.go
-    │       │   └── gorm
-    │       │       └── gorm.go
-    │       ├── database.go
-    │       └── inject.go
+    │   ├── database
+    │   │   ├── adapter
+    │   │   │   ├── db
+    │   │   │   │   └── db.go
+    │   │   │   └── gorm
+    │   │   │       └── gorm.go
+    │   │   ├── database.go
+    │   │   └── inject.go
+    │   ├── locale
+    │   │   ├── inject.go
+    │   │   └── locale.go
+    │   └── middleware
+    │       └── logger.go
     ├── cmd  # Any Command line running functions
     │   ├── api
     │   │   └── main.go  # Starting point for the applicatioin
