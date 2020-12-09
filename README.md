@@ -17,7 +17,8 @@
 - [x] Mono Repo
 - [x] Multi language
 - [x] Json logger
-- [x] Docker
+- [x] Makefile for commands
+- [ ] Docker
 - [ ] Docker Compose
 - [ ] Kubernetes
 - [ ] Unit Test
@@ -28,7 +29,6 @@
 - [ ] CRUD with pagination support
 - [ ] Mongo db integration
 - [ ] Elastic Search integration
-- [ ] Makefile for commands
 
 ###  Go to specific microservice
 ```sh
@@ -37,17 +37,29 @@
 ### Change the config in .env for database and migrate
 
 ```sh
- go run cmd/migrate/main.go up
+make migrate-up
+
+or
+
+go run cmd/migrate/main.go up
 ```
 
 ###  Generate API document to the ./doc folder using <strong>swag cli</strong>
 ```sh
+ make docs
+ 
+ or
+ 
  swag init -g cmd/api/main.go -o doc
 ```
 
 ###  Run service
 ```sh
- go run cmd/api/main.go
+make run 
+
+or 
+
+go run cmd/api/main.go
 ```
 
 ## Folder Structure
