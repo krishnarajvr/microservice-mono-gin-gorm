@@ -1,12 +1,15 @@
-package controller
+package handler
 
 import (
-	"micro/service"
+	"log"
+
+	"micro/common"
+	"micro/common/error"
 
 	"github.com/gin-gonic/gin"
 )
 
-// UserList godoc
+// ListUsers godoc
 // @Summary List all existing users
 // @Description List all existing users
 // @Tags user
@@ -16,14 +19,18 @@ import (
 // @Failure 500 {object} common.Error500
 // @Success 200 {object} swagdto.UserResponse
 // @Router /users [get]
-func UserList(c *gin.Context) {
+func (h *Handler) ListUsers(c *gin.Context) {
 
-	users, err := service.ListUsers(c)
+	users, err := h.UserService.GetAll()
 
 	if err != nil {
-		c.JSON(500, "error")
+		log.Printf("Failed to sign up user: %v\n", err.Error())
+		c.JSON(error.Status(err), gin.H{
+			"error": err,
+		})
 		return
 	}
 
-	c.JSON(200, users)
+	common.Success(c, "users", users)
+
 }

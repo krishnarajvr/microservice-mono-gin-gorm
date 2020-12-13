@@ -5,6 +5,7 @@
 * Golang
 * Mysql
 * Swag cli
+* Mockery
 
 ## Featues
 
@@ -18,17 +19,15 @@
 - [x] Multi language
 - [x] Json logger
 - [x] Makefile for commands
+- [*] Unit Test
+- [*] Integration Test
+- [*] Mock server integration 
 - [ ] Docker
 - [ ] Docker Compose
 - [ ] Kubernetes
-- [ ] Unit Test
-- [ ] Integration Test
-- [ ] Mock server integration 
 - [ ] Common validation and errors
 - [ ] Share library across service
 - [ ] CRUD with pagination support
-- [ ] Mongo db integration
-- [ ] Elastic Search integration
 
 ###  Go to specific microservice
 ```sh

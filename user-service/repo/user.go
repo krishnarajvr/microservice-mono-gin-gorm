@@ -6,10 +6,23 @@ import (
 	"micro/model"
 )
 
-func ListUsers(db *gorm.DB) (model.Users, error) {
-	
+type IUserRepo interface {
+	ListUsers() (model.Users, error)
+}
+
+type UserRepo struct {
+	DB *gorm.DB
+}
+
+func NewUserRepo(db *gorm.DB) UserRepo {
+	return UserRepo{
+		DB: db,
+	}
+}
+
+func (r UserRepo) ListUsers() (model.Users, error) {
 	users := make([]*model.User, 0)
-	if err := db.Find(&users).Error; err != nil {
+	if err := r.DB.Find(&users).Error; err != nil {
 		return nil, err
 	}
 

@@ -6,11 +6,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/pressly/goose"
-
-	"micro/app/database/adapter/db"
 	"micro/common"
 	"micro/config"
+
+	"github.com/pressly/goose"
 )
 
 const dialect = "mysql"
@@ -49,7 +48,11 @@ func main() {
 	}
 
 	appConf := config.AppConfig()
-	appDb, err := db.New(appConf)
+	log.Println("Start migration...")
+
+	// initialize data sources
+	appDb, err := app.initDS()
+
 	if err != nil {
 		log.Fatalf(err.Error())
 	}

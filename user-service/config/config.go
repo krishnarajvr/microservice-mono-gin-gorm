@@ -14,6 +14,7 @@ type Conf struct {
 	Server serverConf
 	Db     dbConf
 	Log    logConf
+	App    appConf
 }
 
 type serverConf struct {
@@ -36,6 +37,11 @@ type dbConf struct {
 	DbName   string `env:"DB_NAME,required"`
 }
 
+type appConf struct {
+	BaseURL string `env:"APP_BASE_URL"`
+	Lang    string `env:"APP_LANG"`
+}
+
 func AppConfig() *Conf {
 	var c Conf
 
@@ -48,11 +54,18 @@ func AppConfig() *Conf {
 		fmt.Print("Not able to get current working director")
 	}
 
-	fmt.Println(c)
+	if len(c.App.Lang) <= 0 {
+		c.App.Lang = "el-GR"
+	}
+
+	if len(c.App.BaseURL) <= 0 {
+		c.App.BaseURL = "api/v1"
+	}
 
 	if len(c.Log.LogFilePath) <= 0 {
 		c.Log.LogFilePath = dir + "/log"
 	}
+
 	if len(c.Log.LogFileName) <= 0 {
 		c.Log.LogFileName = "micro.log"
 	}

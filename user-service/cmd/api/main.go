@@ -1,12 +1,13 @@
 package main
 
 import (
-	"micro/app/database"
+	"log"
+
+	"micro/app"
 	"micro/app/locale"
 	"micro/app/middleware"
 	"micro/common"
 	"micro/config"
-	"micro/route"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,14 +26,23 @@ func init() {
 func main() {
 
 	appConf := config.AppConfig()
-	// initializes database
-	db, _ := database.Initialize()
+	log.Println("Starting server...")
+
+	// initialize data sources
+	ds, err := app.InitDS()
+
+	if err != nil {
+		log.Fatalf("Unable to initialize data sources: %v\n", err)
+	}
+
+	ginApp, err := app.Inject(ds)
+
 	lang := locale.Locale{}
-	app := gin.Default() // create gin app
-	app.Use(middleware.LoggerToFile())
-	app.Use(gin.Recovery())
-	app.Use(database.Inject(db))
-	app.Use(locale.Inject(lang.New("el-GR")))
-	route.Apply(app)                   // apply api router
-	app.Run(":" + appConf.Server.Port) // listen to given port
+
+	ginApp.Use(middleware.LoggerToFile())
+	ginApp.Use(gin.Recovery())
+	//app.Use(database.Inject(db))
+	ginApp.Use(locale.Inject(lang.New("el-GR")))
+	//route.Apply(app)                   // apply api router
+	ginApp.Run(":" + appConf.Server.Port) // listen to given port
 }

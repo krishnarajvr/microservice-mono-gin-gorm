@@ -11,7 +11,7 @@ definitions:
         example: Internal Server Error
         type: string
     type: object
-  dto.UserDto:
+  model.UserDto:
     properties:
       created_date:
         type: string
@@ -32,7 +32,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/dto.UserDto'
+          $ref: '#/definitions/model.UserDto'
         type: array
       error:
         type: object

@@ -81,7 +81,7 @@ var doc = `{
                 }
             }
         },
-        "dto.UserDto": {
+        "model.UserDto": {
             "type": "object",
             "properties": {
                 "created_date": {
@@ -111,7 +111,7 @@ var doc = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.UserDto"
+                        "$ref": "#/definitions/model.UserDto"
                     }
                 },
                 "error": {

@@ -66,7 +66,7 @@
                 }
             }
         },
-        "dto.UserDto": {
+        "model.UserDto": {
             "type": "object",
             "properties": {
                 "created_date": {
@@ -96,7 +96,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.UserDto"
+                        "$ref": "#/definitions/model.UserDto"
                     }
                 },
                 "error": {
