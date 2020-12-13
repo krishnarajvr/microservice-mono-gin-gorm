@@ -19,9 +19,9 @@
 - [x] Multi language
 - [x] Json logger
 - [x] Makefile for commands
-- [*] Unit Test
-- [*] Integration Test
-- [*] Mock server integration 
+- [x] Unit Test
+- [x] Integration Test
+- [x] Mock server integration 
 - [ ] Docker
 - [ ] Docker Compose
 - [ ] Kubernetes
