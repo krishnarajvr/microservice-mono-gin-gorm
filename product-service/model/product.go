@@ -18,9 +18,10 @@ type Product struct {
 
 func (b Product) ToDto() *ProductDto {
 	return &ProductDto{
-		ID:   b.ID,
-		Name: b.Name,
-		Code: b.Code,
+		ID:          b.ID,
+		Name:        b.Name,
+		Code:        b.Code,
+		Description: b.Description,
 	}
 }
 

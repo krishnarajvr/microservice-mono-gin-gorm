@@ -20,3 +20,11 @@ func Success(c *gin.Context, key string, body interface{}) {
 		"error":  "",
 	})
 }
+
+func BadRequest(c *gin.Context, errorData interface{}) {
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusBadRequest,
+		"data":   "",
+		"error":  errorData,
+	})
+}

@@ -8,6 +8,7 @@ import (
 
 type IProductRepo interface {
 	ListProducts() (model.Products, error)
+	GetById(id int) (*model.Product, error)
 }
 
 type ProductRepo struct {
@@ -31,4 +32,13 @@ func (r ProductRepo) ListProducts() (model.Products, error) {
 	}
 
 	return products, nil
+}
+
+func (r ProductRepo) GetById(id int) (*model.Product, error) {
+	product := new(model.Product)
+	if err := r.DB.Where("id = ?", id).First(&product).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
 }

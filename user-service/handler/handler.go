@@ -4,9 +4,12 @@ import (
 	"log"
 	"net/http"
 
+	_ "micro/doc"
 	"micro/service"
 
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 // Handler struct holds required services for handler to function
@@ -40,6 +43,8 @@ func NewHandler(c *Config) {
 	g.POST("/tokens", h.Tokens)
 	g.GET("/details", h.Details)
 	g.GET("/users", h.ListUsers)
+
+	c.R.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
 
 // Signin handler

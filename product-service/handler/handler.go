@@ -4,9 +4,12 @@ import (
 	"log"
 	"net/http"
 
+	_ "micro/doc"
 	"micro/service"
 
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 // Handler struct holds required services for handler to function
@@ -17,13 +20,11 @@ type Handler struct {
 // Config will hold services that will eventually be injected into this
 // handler layer on handler initialization
 type Config struct {
-	R           *gin.Engine
+	R              *gin.Engine
 	ProductService service.IProductService
-	BaseURL     string
+	BaseURL        string
 }
 
-// NewHandler initializes the handler with required injected services along with http routes
-// Does not return as it deals directly with a reference to the gin Engine
 func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
@@ -35,32 +36,11 @@ func NewHandler(c *Config) {
 
 	log.Println("Setting handler")
 
-	g.POST("/signin", h.Signin)
-	g.POST("/signout", h.Signout)
-	g.POST("/tokens", h.Tokens)
-	g.GET("/details", h.Details)
-	g.GET("/users", h.ListProducts)
-}
+	g.GET("/products/:id", h.GetProductById)
+	g.GET("/products", h.ListProducts)
 
-// Signin handler
-func (h *Handler) Signin(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's signin",
-	})
-}
+	c.R.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-// Signout handler
-func (h *Handler) Signout(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's signout",
-	})
-}
-
-// Tokens handler
-func (h *Handler) Tokens(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"hello": "it's tokens",
-	})
 }
 
 // Details handler

@@ -9,6 +9,7 @@ import (
 
 type IProductService interface {
 	GetAll() (model.ProductDtos, error)
+	GetById(id int) (*model.ProductDto, error)
 }
 
 type ProductService struct {
@@ -25,7 +26,7 @@ func NewProductService(c *ServiceConfig) IProductService {
 
 func (s *ProductService) GetAll() (model.ProductDtos, error) {
 
-	u, err := s.ProductRepo.ListProducts()
+	products, err := s.ProductRepo.ListProducts()
 
 	if err != nil {
 		log.Println(err)
@@ -34,7 +35,25 @@ func (s *ProductService) GetAll() (model.ProductDtos, error) {
 
 	log.Println(s.Lang.Get("hi", "GetAll"))
 
-	udto := u.ToDto()
+	productsDto := products.ToDto()
 
-	return udto, err
+	return productsDto, err
+}
+
+func (s *ProductService) GetById(id int) (*model.ProductDto, error) {
+
+	product, err := s.ProductRepo.GetById(id)
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	log.Println(product)
+
+	productDto := product.ToDto()
+
+	log.Println(productDto)
+
+	return productDto, nil
 }
