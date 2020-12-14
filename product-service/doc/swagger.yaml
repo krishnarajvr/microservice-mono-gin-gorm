@@ -1,0 +1,74 @@
+basePath: /v1
+definitions:
+  common.Error500:
+    properties:
+      code:
+        example: 500
+        type: integer
+      data:
+        type: string
+      error:
+        example: Internal Server Error
+        type: string
+    type: object
+  model.ProductDto:
+    properties:
+      code:
+        example: Product1
+        type: string
+      description:
+        example: Product description
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Product 1
+        type: string
+    type: object
+  swagdto.ProductResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.ProductDto'
+        type: array
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+host: 127.0.0.1:8081
+info:
+  contact: {}
+  description: List APIs of ProductManagement Service
+  termsOfService: http://swagger.io/terms/
+  title: ProductManagement Service API Document
+  version: "1.0"
+paths:
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: List all existing products
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/common.Error500'
+      summary: List all existing products
+      tags:
+      - product
+swagger: "2.0"
