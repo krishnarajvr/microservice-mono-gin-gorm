@@ -35,7 +35,7 @@ make migrate-up
 make run 
 ```
 
-###  Run service
+###  Test service
 ```sh
 make test 
 ```
