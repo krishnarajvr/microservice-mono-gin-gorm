@@ -4,11 +4,8 @@ import (
 	"log"
 
 	"micro/app"
-	"micro/app/middleware"
 	"micro/common"
 	"micro/config"
-
-	"github.com/gin-gonic/gin"
 )
 
 func init() {
@@ -37,7 +34,5 @@ func main() {
 	//Add dependency injection
 	ginApp, err := app.Inject(ds)
 
-	ginApp.Use(middleware.LoggerToFile())
-	ginApp.Use(gin.Recovery())
 	ginApp.Run(":" + appConf.Server.Port)
 }

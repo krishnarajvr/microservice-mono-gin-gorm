@@ -37,6 +37,7 @@ func NewHandler(c *Config) {
 	log.Println("Setting handler")
 
 	g.GET("/products/:id", h.GetProductById)
+	g.POST("/products", h.AddProduct)
 	g.GET("/products", h.ListProducts)
 
 	c.R.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

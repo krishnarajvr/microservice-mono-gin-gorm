@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"micro/common"
+	"micro/model"
 
 	"github.com/beego/beego/v2/core/validation"
 	"github.com/gin-gonic/gin"
@@ -52,6 +53,36 @@ func (h *Handler) GetProductById(c *gin.Context) {
 	}
 
 	product, err := h.ProductService.GetById(id)
+	if err != nil {
+		common.BadRequest(c, err)
+		return
+	}
+
+	common.Success(c, "product", product)
+}
+
+// @Summary Add product
+// @Produce  json
+// @Param tag_id body int true "TagID"
+// @Param title body string true "Title"
+// @Param desc body string true "Desc"
+// @Param content body string true "Content"
+// @Param created_by body string true "CreatedBy"
+// @Param state body int true "State"
+// @Success 200 {object} app.Response
+// @Failure 500 {object} app.Response
+// @Router /api/v1/products [post]
+func (h *Handler) AddProduct(c *gin.Context) {
+
+	var form model.ProductForm
+
+	_, errCode := common.ValidateForm(c, &form)
+	if errCode != common.SUCCESS {
+		common.BadRequest(c, "Bad Request")
+		return
+	}
+
+	product, err := h.ProductService.Add(&form)
 	if err != nil {
 		common.BadRequest(c, err)
 		return

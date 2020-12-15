@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"micro/app/locale"
+	"micro/app/middleware"
 	"micro/config"
 	"micro/handler"
 	"micro/service"
@@ -29,6 +30,8 @@ func Inject(d *dbs) (*gin.Engine, error) {
 
 	// initialize gin.Engine
 	router := gin.Default()
+	router.Use(middleware.LoggerToFile())
+	router.Use(gin.Recovery())
 
 	handler.NewHandler(&handler.Config{
 		R:              router,

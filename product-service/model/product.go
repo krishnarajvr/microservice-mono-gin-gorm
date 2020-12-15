@@ -1,8 +1,6 @@
 package model
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -12,7 +10,6 @@ type Product struct {
 	gorm.Model
 	Name        string
 	Code        string
-	CreatedDate time.Time
 	Description string
 }
 
@@ -35,9 +32,9 @@ type ProductDto struct {
 }
 
 type ProductForm struct {
-	Name        string `json:"name" example:"Product 1"`
-	Code        string `json:"code" example:"Product1"`
-	Description string `json:"description" example:"Product description"`
+	Name        string `json:"name" valid:"Required;MaxSize(100)"`
+	Code        string `json:"code" example:"Product1" valid:"Required;MaxSize(100)"`
+	Description string `json:"description" example:"Product description" valid:"Required;MaxSize(255)"`
 }
 
 func (bs Products) ToDto() ProductDtos {
