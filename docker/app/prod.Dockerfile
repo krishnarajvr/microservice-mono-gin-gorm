@@ -1,7 +1,7 @@
 # Build environment
 # -----------------
 FROM golang:1.15-alpine as build-env
-WORKDIR /myapp
+WORKDIR /micro
 
 RUN apk update && apk add --no-cache gcc musl-dev git
 
@@ -20,9 +20,9 @@ RUN go build -ldflags '-w -s' -a -o ./bin/app ./cmd/app \
 FROM alpine
 RUN apk update
 
-COPY --from=build-env /myapp/bin/app /myapp/
-COPY --from=build-env /myapp/bin/migrate /myapp/
-COPY --from=build-env /myapp/migrations /myapp/migrations
+COPY --from=build-env /micro/bin/app /micro/
+COPY --from=build-env /micro/bin/migrate /micro/
+COPY --from=build-env /micro/migrations /micro/migrations
 
 EXPOSE 8080
-CMD ["/myapp/app"]
+CMD ["/micro/app"]

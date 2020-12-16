@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-app
-  namespace: myapp
+  name: micro-app
+  namespace: micro
   labels:
-    app: myapp-app
+    app: micro-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myapp-app
+      app: micro-app
   template:
     metadata:
       labels:
-        app: myapp-app
+        app: micro-app
     spec:
       containers:
-      - name: myapp-app
-        image: learningcloudnativego/myapp-app:0.0.1
+      - name: micro-app
+        image: microappdemo/micro-app:0.0.1
         imagePullPolicy: IfNotPresent
-        command: ["/myapp/app"]
+        command: ["/micro/app"]
         ports:
         - name: httpport
           containerPort: 8080
         envFrom:
         - configMapRef:
-            name: myapp-app-config
+            name: micro-app-config
         - secretRef:
-            name: myapp-app-secret
+            name: micro-app-secret
         readinessProbe:
           httpGet:
             path: /healthz

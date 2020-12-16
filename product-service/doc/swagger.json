@@ -10,6 +10,70 @@
     "host": "127.0.0.1:8081",
     "basePath": "/v1",
     "paths": {
+        "/api/v1/products": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Add product",
+                "parameters": [
+                    {
+                        "description": "User ID",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProductForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.ProductResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a single product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.ProductResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            }
+        },
         "/products": {
             "get": {
                 "description": "List all existing products",
@@ -36,13 +100,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.ProductResponse"
+                            "$ref": "#/definitions/swagdto.ProductListResponse"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/common.Error500"
+                            "$ref": "#/definitions/swagdto.Error404"
                         }
                     }
                 }
@@ -50,19 +114,39 @@
         }
     },
     "definitions": {
-        "common.Error500": {
+        "common.ErrorData": {
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "integer",
-                    "example": 500
-                },
-                "data": {
-                    "type": "string"
-                },
-                "error": {
                     "type": "string",
-                    "example": "Internal Server Error"
+                    "example": "BAD_REQUEST"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.ErrorDetail"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Bad Request"
+                }
+            }
+        },
+        "common.ErrorDetail": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "Required"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Name field is required"
+                },
+                "target": {
+                    "type": "string",
+                    "example": "Name"
                 }
             }
         },
@@ -87,14 +171,42 @@
                 }
             }
         },
-        "swagdto.ProductResponse": {
+        "model.ProductForm": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "Product1"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "Product description"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagdto.Error404": {
             "type": "object",
             "properties": {
                 "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.ProductDto"
-                    }
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/common.ErrorData"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 404
+                }
+            }
+        },
+        "swagdto.ProductListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagdto.ProductSampleListData"
                 },
                 "error": {
                     "type": "object"
@@ -102,6 +214,40 @@
                 "status": {
                     "type": "integer",
                     "example": 200
+                }
+            }
+        },
+        "swagdto.ProductResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagdto.ProductSampleData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "swagdto.ProductSampleData": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "$ref": "#/definitions/model.ProductDto"
+                }
+            }
+        },
+        "swagdto.ProductSampleListData": {
+            "type": "object",
+            "properties": {
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductDto"
+                    }
                 }
             }
         }

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: myapp-app-config
-  namespace: myapp
+  name: micro-app-config
+  namespace: micro
   labels:
-    app: myapp-app-config
+    app: micro-app-config
 data:
   DEBUG: 'false'
   SERVER_PORT: '8080'

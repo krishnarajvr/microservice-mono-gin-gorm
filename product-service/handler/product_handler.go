@@ -18,8 +18,8 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param Authorization header string true "Token"
-// @Failure 500 {object} common.Error500
-// @Success 200 {object} swagdto.ProductResponse
+// @Failure 404 {object} swagdto.Error404
+// @Success 200 {object} swagdto.ProductListResponse
 // @Router /products [get]
 func (h *Handler) ListProducts(c *gin.Context) {
 
@@ -31,15 +31,15 @@ func (h *Handler) ListProducts(c *gin.Context) {
 		return
 	}
 
-	common.Success(c, "products", products)
+	common.SuccessResponse(c, "products", products)
 
 }
 
 // @Summary Get a single product
 // @Produce  json
 // @Param id path int true "ID"
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
+// @Failure 404 {object} swagdto.Error404
+// @Success 200 {object} swagdto.ProductResponse
 // @Router /api/v1/products/{id} [get]
 func (h *Handler) GetProductById(c *gin.Context) {
 
@@ -58,27 +58,22 @@ func (h *Handler) GetProductById(c *gin.Context) {
 		return
 	}
 
-	common.Success(c, "product", product)
+	common.SuccessResponse(c, "product", product)
 }
 
 // @Summary Add product
 // @Produce  json
-// @Param tag_id body int true "TagID"
-// @Param title body string true "Title"
-// @Param desc body string true "Desc"
-// @Param content body string true "Content"
-// @Param created_by body string true "CreatedBy"
-// @Param state body int true "State"
-// @Success 200 {object} app.Response
-// @Failure 500 {object} app.Response
+// @Param user body model.ProductForm true "User ID"
+// @Failure 404 {object} swagdto.Error404
+// @Success 200 {object} swagdto.ProductResponse
 // @Router /api/v1/products [post]
 func (h *Handler) AddProduct(c *gin.Context) {
 
 	var form model.ProductForm
 
-	_, errCode := common.ValidateForm(c, &form)
-	if errCode != common.SUCCESS {
-		common.BadRequest(c, "Bad Request")
+	ok, errorData := common.ValidateForm(c, &form)
+	if !ok {
+		common.ErrorResponse(c, errorData)
 		return
 	}
 
@@ -88,5 +83,5 @@ func (h *Handler) AddProduct(c *gin.Context) {
 		return
 	}
 
-	common.Success(c, "product", product)
+	common.SuccessResponse(c, "product", product)
 }

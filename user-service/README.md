@@ -12,8 +12,7 @@
 ### Change the config in .env for database and other configuration
 
 
-
-### Create a migration file
+### Create a migration file - if required
 
 ```
 go run cmd/migrate/main.go create product_update sql

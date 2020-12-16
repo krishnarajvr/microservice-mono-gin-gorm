@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   app:
     build:
       context: .
@@ -13,14 +12,13 @@ services:
       - db
     command: /bin/sh -c 'while ! nc -z db 3307; do sleep 1; done; ./docker/app/bin/init.sh;'
     restart: always
-
   db:
     image: yobasystems/alpine-mariadb:latest
     environment:
-      MYSQL_ROOT_PASSWORD: myapp_root_pass
-      MYSQL_DATABASE: myapp_db
-      MYSQL_USER: myapp_user
-      MYSQL_PASSWORD: myapp_pass
+      MYSQL_ROOT_PASSWORD: micro_root_pass
+      MYSQL_DATABASE: micro_db
+      MYSQL_USER: micro_user
+      MYSQL_PASSWORD: micro_pass
     ports:
       - 3307:3306
     restart: always

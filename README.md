@@ -2,10 +2,10 @@
 
 ## Requirements
 
-* Golang
-* Mysql
-* Swag cli
-* Mockery
+* Golang - 1.14 recommended
+* Mysql - 8.0 
+* Swag cli - For generating swagger docs
+* Mockery  - For generating mock classes for testing
 
 ## Featues
 
@@ -29,9 +29,10 @@
 - [ ] Share library across service
 - [ ] CRUD with pagination support
 
+
 ###  Go to specific microservice
 ```sh
- cd user-service
+ cd product-service
 ```
 ### Change the config in .env for database and migrate
 
@@ -63,12 +64,15 @@ or
 go run cmd/api/main.go
 ```
 
+###  Generate mock files
+```sh
+make mock 
+```
+
 ###  Test service
 ```sh
 make test 
 ```
-
-
 
 ## Folder Structure
 

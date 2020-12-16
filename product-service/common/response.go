@@ -13,7 +13,7 @@ type Response struct {
 	Error  interface{} `json:"error" example:"{}"`
 }
 
-func Success(c *gin.Context, key string, body interface{}) {
+func SuccessResponse(c *gin.Context, key string, body interface{}) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
 		"data":   map[string]interface{}{key: body},
@@ -22,6 +22,14 @@ func Success(c *gin.Context, key string, body interface{}) {
 }
 
 func BadRequest(c *gin.Context, errorData interface{}) {
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusBadRequest,
+		"data":   "",
+		"error":  errorData,
+	})
+}
+
+func ErrorResponse(c *gin.Context, errorData *ErrorData) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusBadRequest,
 		"data":   "",

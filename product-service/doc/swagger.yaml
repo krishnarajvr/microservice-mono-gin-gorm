@@ -1,14 +1,28 @@
 basePath: /v1
 definitions:
-  common.Error500:
+  common.ErrorData:
     properties:
       code:
-        example: 500
-        type: integer
-      data:
+        example: BAD_REQUEST
         type: string
-      error:
-        example: Internal Server Error
+      details:
+        items:
+          $ref: '#/definitions/common.ErrorDetail'
+        type: array
+      message:
+        example: Bad Request
+        type: string
+    type: object
+  common.ErrorDetail:
+    properties:
+      code:
+        example: Required
+        type: string
+      message:
+        example: Name field is required
+        type: string
+      target:
+        example: Name
         type: string
     type: object
   model.ProductDto:
@@ -26,17 +40,58 @@ definitions:
         example: Product 1
         type: string
     type: object
-  swagdto.ProductResponse:
+  model.ProductForm:
+    properties:
+      code:
+        example: Product1
+        type: string
+      description:
+        example: Product description
+        type: string
+      name:
+        type: string
+    type: object
+  swagdto.Error404:
     properties:
       data:
-        items:
-          $ref: '#/definitions/model.ProductDto'
-        type: array
+        type: object
+      error:
+        $ref: '#/definitions/common.ErrorData'
+      status:
+        example: 404
+        type: integer
+    type: object
+  swagdto.ProductListResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagdto.ProductSampleListData'
       error:
         type: object
       status:
         example: 200
         type: integer
+    type: object
+  swagdto.ProductResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagdto.ProductSampleData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagdto.ProductSampleData:
+    properties:
+      product:
+        $ref: '#/definitions/model.ProductDto'
+    type: object
+  swagdto.ProductSampleListData:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/model.ProductDto'
+        type: array
     type: object
 host: 127.0.0.1:8081
 info:
@@ -46,6 +101,47 @@ info:
   title: ProductManagement Service API Document
   version: "1.0"
 paths:
+  /api/v1/products:
+    post:
+      parameters:
+      - description: User ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Add product
+  /api/v1/products/{id}:
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Get a single product
   /products:
     get:
       consumes:
@@ -63,11 +159,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
-        "500":
-          description: Internal Server Error
+            $ref: '#/definitions/swagdto.ProductListResponse'
+        "404":
+          description: Not Found
           schema:
-            $ref: '#/definitions/common.Error500'
+            $ref: '#/definitions/swagdto.Error404'
       summary: List all existing products
       tags:
       - product
