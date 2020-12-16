@@ -3,9 +3,9 @@
 ## Requirements
 
 * Golang - 1.14 recommended
-* Mysql - 8.0 
-* Swag cli - For generating swagger docs
-* Mockery  - For generating mock classes for testing
+* Mysql - 8.0  
+* [Swag cli](https://github.com/swaggo/swag)  - For generating swagger docs
+* [Mockery](https://github.com/vektra/mockery) - For generating mock classes for testing
 
 ## Featues
 
