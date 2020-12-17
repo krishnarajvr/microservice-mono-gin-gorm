@@ -1,13 +1,13 @@
 version: '3'
 services:
-  app:
+  product-service:
     build:
-      context: .
+      context: ./product-service
       dockerfile: ./docker/app/Dockerfile
     env_file:
-      - ./docker/app/.env
+      - ./product-service/docker/app/.env
     ports:
-      - 8082:8080
+      - 8092:8080
     depends_on:
       - db
     command: /bin/sh -c 'while ! nc -z db 3307; do sleep 1; done; ./docker/app/bin/init.sh;'

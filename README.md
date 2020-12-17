@@ -11,21 +11,26 @@
 
 - [x] Config using .env
 - [x] Database migration 
+- [x] GORM Integration
+- [x] Dependency Injection
 - [x] Swagger docs
 - [x] Repository
-- [x] Seperate route
-- [x] Seperate controller
+- [x] Seperate service
+- [x] Seperate handler
 - [x] Mono Repo
 - [x] Multi language
 - [x] Json logger
 - [x] Makefile for commands
+- [x] Mock object integration 
 - [x] Unit Test
 - [x] Integration Test
-- [x] Mock server integration 
+- [x] Standard request and response and errors
+- [x] Common form validation 
+- [x] Health endpoint
+- [ ] Common error messages
 - [ ] Docker
 - [ ] Docker Compose
 - [ ] Kubernetes
-- [ ] Common validation and errors
 - [ ] Share library across service
 - [ ] CRUD with pagination support
 
@@ -77,7 +82,6 @@ make test
 ## Folder Structure
 
 ```sh
-
 ├── product-service
 ├── README.md
 ├── .env  # Environment configuration

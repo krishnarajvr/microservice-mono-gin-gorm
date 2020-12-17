@@ -34,3 +34,7 @@ test:
 mock:
 	mockery --dir=service --name=IProductService  --output=service/mocks
 	mockery --dir=repo --name=IProductRepo  --output=repo/mocks
+docker-build:
+	sudo docker build -t microapp:v1 -f docker/app/Dockerfile .
+docker-run:
+	sudo docker start --publish 8092:8080 --name micro-app-v1 microapp:v1

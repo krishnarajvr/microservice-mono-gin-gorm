@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -ldflags '-w -s' -a -o ./bin/app ./cmd/app \
+RUN go build -ldflags '-w -s' -a -o ./bin/api ./cmd/api \
     && go build -ldflags '-w -s' -a -o ./bin/migrate ./cmd/migrate \
     && chmod +x /micro/docker/app/bin/*
 
