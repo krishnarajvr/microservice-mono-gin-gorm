@@ -1,4 +1,4 @@
-basePath: /v1
+basePath: /api/v1
 definitions:
   common.ErrorData:
     properties:
@@ -49,6 +49,7 @@ definitions:
         example: Product description
         type: string
       name:
+        example: Product 1
         type: string
     type: object
   swagdto.Error404:
@@ -93,7 +94,7 @@ definitions:
           $ref: '#/definitions/model.ProductDto'
         type: array
     type: object
-host: 127.0.0.1:8081
+host: 127.0.0.1:8092
 info:
   contact: {}
   description: List APIs of ProductManagement Service
@@ -101,47 +102,6 @@ info:
   title: ProductManagement Service API Document
   version: "1.0"
 paths:
-  /api/v1/products:
-    post:
-      parameters:
-      - description: User ID
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.ProductForm'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/swagdto.Error404'
-      summary: Add product
-  /api/v1/products/{id}:
-    get:
-      parameters:
-      - description: ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/swagdto.Error404'
-      summary: Get a single product
   /products:
     get:
       consumes:
@@ -167,4 +127,113 @@ paths:
       summary: List all existing products
       tags:
       - product
+    post:
+      parameters:
+      - description: Product ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Add product
+  /products/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Delete a product
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Get a product
+    patch:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Patch product
+    post:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProductForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.ProductResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Update product
 swagger: "2.0"

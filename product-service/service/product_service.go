@@ -8,9 +8,12 @@ import (
 )
 
 type IProductService interface {
-	GetAll() (model.ProductDtos, error)
-	GetById(id int) (*model.ProductDto, error)
+	List() (model.ProductDtos, error)
+	Get(id int) (*model.ProductDto, error)
 	Add(product *model.ProductForm) (*model.ProductDto, error)
+	Update(form *model.ProductForm, id int) (*model.ProductDto, error)
+	Patch(form *model.ProductPatchForm, id int) (*model.ProductDto, error)
+	Delete(id int) (*model.ProductDto, error)
 }
 
 type ProductService struct {
@@ -25,9 +28,9 @@ func NewProductService(c *ServiceConfig) IProductService {
 	}
 }
 
-func (s *ProductService) GetAll() (model.ProductDtos, error) {
+func (s *ProductService) List() (model.ProductDtos, error) {
 
-	products, err := s.ProductRepo.ListProducts()
+	products, err := s.ProductRepo.List()
 
 	if err != nil {
 		log.Println(err)
@@ -41,9 +44,9 @@ func (s *ProductService) GetAll() (model.ProductDtos, error) {
 	return productsDto, err
 }
 
-func (s *ProductService) GetById(id int) (*model.ProductDto, error) {
+func (s *ProductService) Get(id int) (*model.ProductDto, error) {
 
-	product, err := s.ProductRepo.GetById(id)
+	product, err := s.ProductRepo.Get(id)
 
 	if err != nil {
 		log.Println(err)
@@ -62,6 +65,60 @@ func (s *ProductService) GetById(id int) (*model.ProductDto, error) {
 func (s *ProductService) Add(form *model.ProductForm) (*model.ProductDto, error) {
 
 	product, err := s.ProductRepo.Add(form)
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	log.Println(product)
+
+	productDto := product.ToDto()
+
+	log.Println(productDto)
+
+	return productDto, nil
+}
+
+func (s *ProductService) Update(form *model.ProductForm, id int) (*model.ProductDto, error) {
+
+	product, err := s.ProductRepo.Update(form, id)
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	log.Println(product)
+
+	productDto := product.ToDto()
+
+	log.Println(productDto)
+
+	return productDto, nil
+}
+
+func (s *ProductService) Patch(form *model.ProductPatchForm, id int) (*model.ProductDto, error) {
+
+	product, err := s.ProductRepo.Patch(form, id)
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	log.Println(product)
+
+	productDto := product.ToDto()
+
+	log.Println(productDto)
+
+	return productDto, nil
+}
+
+func (s *ProductService) Delete(id int) (*model.ProductDto, error) {
+
+	product, err := s.ProductRepo.Delete(id)
 
 	if err != nil {
 		log.Println(err)

@@ -32,9 +32,15 @@ type ProductDto struct {
 }
 
 type ProductForm struct {
-	Name        string `json:"name" valid:"Required;MaxSize(100)"`
+	Name        string `json:"name" example:"Product 1" valid:"Required;MaxSize(100)"`
 	Code        string `json:"code" example:"Product1" valid:"Required;MaxSize(100)"`
 	Description string `json:"description" example:"Product description" valid:"Required;MaxSize(255)"`
+}
+
+type ProductPatchForm struct {
+	Name        string `json:"name" example:"Product 1" valid:"MaxSize(100)"`
+	Code        string `json:"code" example:"Product1" valid:"MaxSize(100)"`
+	Description string `json:"description" example:"Product description" valid:"MaxSize(255)"`
 }
 
 func (bs Products) ToDto() ProductDtos {
@@ -47,6 +53,14 @@ func (bs Products) ToDto() ProductDtos {
 }
 
 func (f *ProductForm) ToModel() (*Product, error) {
+	return &Product{
+		Name:        f.Name,
+		Code:        f.Code,
+		Description: f.Description,
+	}, nil
+}
+
+func (f *ProductPatchForm) ToModel() (*Product, error) {
 	return &Product{
 		Name:        f.Name,
 		Code:        f.Code,

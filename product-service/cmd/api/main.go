@@ -17,8 +17,8 @@ func init() {
 // @description List APIs of ProductManagement Service
 // @termsOfService http://swagger.io/terms/
 
-// @host 127.0.0.1:8081
-// @BasePath /v1
+// @host 127.0.0.1:8092
+// @BasePath /api/v1
 func main() {
 
 	appConf := config.AppConfig()

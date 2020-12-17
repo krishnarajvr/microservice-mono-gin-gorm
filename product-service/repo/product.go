@@ -7,9 +7,12 @@ import (
 )
 
 type IProductRepo interface {
-	ListProducts() (model.Products, error)
-	GetById(id int) (*model.Product, error)
+	List() (model.Products, error)
+	Get(id int) (*model.Product, error)
 	Add(form *model.ProductForm) (*model.Product, error)
+	Update(form *model.ProductForm, id int) (*model.Product, error)
+	Patch(form *model.ProductPatchForm, id int) (*model.Product, error)
+	Delete(id int) (*model.Product, error)
 }
 
 type ProductRepo struct {
@@ -22,7 +25,7 @@ func NewProductRepo(db *gorm.DB) ProductRepo {
 	}
 }
 
-func (r ProductRepo) ListProducts() (model.Products, error) {
+func (r ProductRepo) List() (model.Products, error) {
 	products := make([]*model.Product, 0)
 	if err := r.DB.Find(&products).Error; err != nil {
 		return nil, err
@@ -35,9 +38,18 @@ func (r ProductRepo) ListProducts() (model.Products, error) {
 	return products, nil
 }
 
-func (r ProductRepo) GetById(id int) (*model.Product, error) {
+func (r ProductRepo) Get(id int) (*model.Product, error) {
 	product := new(model.Product)
 	if err := r.DB.Where("id = ?", id).First(&product).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func (r ProductRepo) Delete(id int) (*model.Product, error) {
+	product := new(model.Product)
+	if err := r.DB.Where("id = ?", id).Delete(&product).Error; err != nil {
 		return nil, err
 	}
 
@@ -52,6 +64,34 @@ func (r ProductRepo) Add(form *model.ProductForm) (*model.Product, error) {
 	}
 
 	if err := r.DB.Create(&product).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func (r ProductRepo) Update(form *model.ProductForm, id int) (*model.Product, error) {
+	product, err := form.ToModel()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := r.DB.Where("id = ?", id).Updates(&product).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func (r ProductRepo) Patch(form *model.ProductPatchForm, id int) (*model.Product, error) {
+	product, err := form.ToModel()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := r.DB.Where("id = ?", id).Updates(&product).Error; err != nil {
 		return nil, err
 	}
 

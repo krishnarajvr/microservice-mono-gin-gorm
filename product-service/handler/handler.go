@@ -36,7 +36,10 @@ func NewHandler(c *Config) {
 
 	log.Println("Setting handler")
 
-	g.GET("/products/:id", h.GetProductById)
+	g.GET("/products/:id", h.GetProduct)
+	g.POST("/products/:id", h.UpdateProduct)
+	g.PATCH("/products/:id", h.PatchProduct)
+	g.DELETE("/products/:id", h.DeleteProduct)
 	g.POST("/products", h.AddProduct)
 	g.GET("/products", h.ListProducts)
 
