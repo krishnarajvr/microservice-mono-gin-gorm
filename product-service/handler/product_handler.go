@@ -23,7 +23,9 @@ import (
 // @Router /products [get]
 func (h *Handler) ListProducts(c *gin.Context) {
 
-	products, err := h.ProductService.List()
+	page := common.Paginator(c)
+
+	products, err := h.ProductService.List(page)
 
 	if err != nil {
 		log.Printf("Failed to sign up product: %v\n", err.Error())

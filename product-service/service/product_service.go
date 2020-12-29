@@ -8,7 +8,7 @@ import (
 )
 
 type IProductService interface {
-	List() (model.ProductDtos, error)
+	List(page model.Pagination) (model.ProductDtos, error)
 	Get(id int) (*model.ProductDto, error)
 	Add(product *model.ProductForm) (*model.ProductDto, error)
 	Update(form *model.ProductForm, id int) (*model.ProductDto, error)
@@ -28,9 +28,9 @@ func NewProductService(c *ServiceConfig) IProductService {
 	}
 }
 
-func (s *ProductService) List() (model.ProductDtos, error) {
+func (s *ProductService) List(page model.Pagination) (model.ProductDtos, error) {
 
-	products, err := s.ProductRepo.List()
+	products, err := s.ProductRepo.List(page)
 
 	if err != nil {
 		log.Println(err)
