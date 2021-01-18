@@ -1,7 +1,7 @@
 .PHONY: keypair migrate-create migrate-up migrate-down migrate-force
 
 PWD = $(shell pwd)
-ACCTPATH = $(PWD)/account
+ACCTPATH = $(PWD)/product
 MPATH = $(ACCTPATH)/migrations
 PORT = 5432
 

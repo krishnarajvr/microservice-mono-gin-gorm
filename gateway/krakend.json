@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "extra_config": {
+        "github_com/devopsfaith/krakend-gologging": {
+            "level": "ERROR",
+            "prefix": "[KRAKEND]",
+            "syslog": true,
+            "stdout": true,
+            "format": "default"
+        }
+    },
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "name": "ProductService",
+    "port": 8080,
+    "endpoints": [
+        {
+            "endpoint": "/product/v1/{level1}",
+            "backend": [
+                {
+                    "host": [
+                        "http://192.168.0.108:8092"
+                    ],
+                    "url_pattern": "/api/v1/{level1}"
+                }
+            ]
+        }
+    ]
+}

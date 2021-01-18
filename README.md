@@ -27,12 +27,13 @@
 - [x] Standard request and response and errors
 - [x] Common form validation 
 - [x] Health endpoint
+- [x] Krakend Gateway integration
 - [ ] Common error messages
 - [ ] Docker
 - [ ] Docker Compose
 - [ ] Kubernetes
 - [ ] Share library across service
-- [ ] CRUD with pagination support
+- [x] CRUD with pagination support
 
 
 ###  Go to specific microservice
