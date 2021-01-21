@@ -1,0 +1,21 @@
+{
+    "extra_config": {
+        "github_com/devopsfaith/krakend-gologging": {
+            "level": "ERROR",
+            "prefix": "[KRAKEND]",
+            "syslog": true,
+            "stdout": true,
+            "format": "default"
+        }
+    },
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "name": "Micro",
+    "port": 8080,
+    "error_backend_alias" :  {
+        "http_status_code": 404,
+        "http_body": "{\"status\":404}"
+    },
+    "product_endpoint": "http://192.168.0.108:8092"
+}

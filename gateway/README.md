@@ -1,13 +1,11 @@
-# Gateway integration using Krakend
+# Gateway integration samples
 
-## Steps
+## Contain examples for krakend gateway(simple and advanced) and traefik proxy
 
-### 1. Add service configuration to krakend.json 
+- Krakend - It is fast but individual routes need to be added for all api ( No * pattern). Features can be customized using middlewares
 
-### 2. Start the service using the configuration
+- Traefik - It is a proxy but support customization using middleware plugins
 
-```
-docker run -p 8080:8080 -v $PWD:/etc/krakend/ devopsfaith/krakend run --config /etc/krakend/krakend.json 
-```
+- Refer readme file in each folder
 
 

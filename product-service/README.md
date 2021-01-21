@@ -16,7 +16,11 @@
 ### Create a migration file
 
 ```
-go run cmd/migrate/main.go create product_update sql
+make migrate-create NAME=user_create
+
+or 
+
+go run cmd/migrate/main.go create user_create sql
 
 ```
 
