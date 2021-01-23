@@ -6,8 +6,6 @@ import (
 	"path"
 	"time"
 
-	"micro/config"
-
 	"github.com/gin-gonic/gin"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
@@ -15,13 +13,11 @@ import (
 )
 
 //LoggerToFile Middleware
-func LoggerToFile() gin.HandlerFunc {
+func LoggerToFile(filePath string, fileName string) gin.HandlerFunc {
 
-	appConf := config.AppConfig()
+	logFile := path.Join(filePath, fileName)
 
-	fileName := path.Join(appConf.Log.LogFilePath, appConf.Log.LogFileName)
-
-	src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	src, err := os.OpenFile(logFile, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		fmt.Println("err", err)
 	}
@@ -92,11 +88,11 @@ func LoggerToFile() gin.HandlerFunc {
 
 		//Log format
 		logger.WithFields(logrus.Fields{
-			"status_code":  statusCode,
-			"latency_time": latencyTime,
-			"client_ip":    clientIP,
-			"req_method":   reqMethod,
-			"req_uri":      reqURI,
+			"statusCode":  statusCode,
+			"latencyTime": latencyTime,
+			"clientIp":    clientIP,
+			"reqMethod":   reqMethod,
+			"reqUri":      reqURI,
 		}).Info()
 	}
 }
