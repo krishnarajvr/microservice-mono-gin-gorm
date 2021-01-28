@@ -6,8 +6,10 @@ import (
 	"micro/app"
 	"micro/app/locale"
 	"micro/app/middleware"
-	"micro/common"
+
 	"micro/config"
+
+	common "github.com/krishnarajvr/micro-common"
 
 	"github.com/gin-gonic/gin"
 )

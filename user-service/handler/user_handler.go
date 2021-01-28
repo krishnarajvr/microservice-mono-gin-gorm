@@ -3,10 +3,8 @@ package handler
 import (
 	"log"
 
-	"micro/common"
-	"micro/common/error"
-
 	"github.com/gin-gonic/gin"
+	common "github.com/krishnarajvr/micro-common"
 )
 
 // ListUsers godoc
@@ -25,12 +23,9 @@ func (h *Handler) ListUsers(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("Failed to sign up user: %v\n", err.Error())
-		c.JSON(error.Status(err), gin.H{
-			"error": err,
-		})
+		common.BadRequest(c, "No users")
 		return
 	}
-
-	common.Success(c, "users", users)
+	common.SuccessResponse(c, "users", users)
 
 }
