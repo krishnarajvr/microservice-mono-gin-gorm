@@ -5,10 +5,12 @@ import (
 	"micro/app/locale"
 	"micro/model"
 	"micro/repo"
+
+	common "github.com/krishnarajvr/micro-common"
 )
 
 type IProductService interface {
-	List(page model.Pagination) (model.ProductDtos, error)
+	List(page common.Pagination) (model.ProductDtos, error)
 	Get(id int) (*model.ProductDto, error)
 	Add(product *model.ProductForm) (*model.ProductDto, error)
 	Update(form *model.ProductForm, id int) (*model.ProductDto, error)
@@ -28,7 +30,7 @@ func NewProductService(c *ServiceConfig) IProductService {
 	}
 }
 
-func (s *ProductService) List(page model.Pagination) (model.ProductDtos, error) {
+func (s *ProductService) List(page common.Pagination) (model.ProductDtos, error) {
 
 	products, err := s.ProductRepo.List(page)
 

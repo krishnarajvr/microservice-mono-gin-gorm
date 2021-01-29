@@ -2,12 +2,13 @@ package handler
 
 import (
 	"log"
-
-	"micro/common"
 	"micro/model"
 
 	"github.com/beego/beego/v2/core/validation"
 	"github.com/gin-gonic/gin"
+
+	common "github.com/krishnarajvr/micro-common"
+	logr "github.com/sirupsen/logrus"
 	"github.com/unknwon/com"
 )
 
@@ -24,6 +25,12 @@ import (
 func (h *Handler) ListProducts(c *gin.Context) {
 
 	page := common.Paginator(c)
+	for k, vals := range c.Request.Header {
+		logr.Infof("%s", k)
+		for _, v := range vals {
+			logr.Infof("\t%s", v)
+		}
+	}
 
 	products, err := h.ProductService.List(page)
 

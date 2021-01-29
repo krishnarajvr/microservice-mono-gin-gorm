@@ -7,9 +7,9 @@ import (
 	"os"
 
 	"micro/app/database/db"
-	"micro/common"
 	"micro/config"
 
+	common "github.com/krishnarajvr/micro-common"
 	"github.com/pressly/goose"
 )
 

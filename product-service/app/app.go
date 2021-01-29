@@ -2,18 +2,17 @@ package app
 
 import (
 	"log"
-
 	"micro/app/locale"
-	"micro/app/middleware"
 	"micro/config"
 	"micro/handler"
+	"micro/repo"
 	"micro/service"
 
-	"micro/repo"
-
 	"github.com/gin-gonic/gin"
+	"github.com/krishnarajvr/micro-common/middleware"
 )
 
+// Inject all the app dependencies
 func Inject(d *dbs) (*gin.Engine, error) {
 	log.Println("Injecting common classes")
 
@@ -30,7 +29,7 @@ func Inject(d *dbs) (*gin.Engine, error) {
 
 	// initialize gin.Engine
 	router := gin.Default()
-	router.Use(middleware.LoggerToFile())
+	router.Use(middleware.LoggerToFile(appConf.Log.LogFilePath, appConf.Log.LogFileName))
 	router.Use(gin.Recovery())
 
 	handler.NewHandler(&handler.Config{

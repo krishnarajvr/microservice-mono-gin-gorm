@@ -4,8 +4,9 @@ import (
 	"log"
 
 	"micro/app"
-	"micro/common"
 	"micro/config"
+
+	common "github.com/krishnarajvr/micro-common"
 )
 
 func init() {

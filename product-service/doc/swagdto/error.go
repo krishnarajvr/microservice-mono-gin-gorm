@@ -1,6 +1,9 @@
 package swagdto
 
-import "micro/common"
+import {
+
+	common "github.com/krishnarajvr/micro-common"
+}
 
 type Error404 struct {
 	Status uint             `json:"status" example:"404"`

@@ -1,14 +1,15 @@
 package repo
 
 import (
+	"micro/model"
+
 	"gorm.io/gorm"
 
-	"micro/common"
-	"micro/model"
+	common "github.com/krishnarajvr/micro-common"
 )
 
 type IProductRepo interface {
-	List(page model.Pagination) (model.Products, error)
+	List(page common.Pagination) (model.Products, error)
 	Get(id int) (*model.Product, error)
 	Add(form *model.ProductForm) (*model.Product, error)
 	Update(form *model.ProductForm, id int) (*model.Product, error)
@@ -26,7 +27,7 @@ func NewProductRepo(db *gorm.DB) ProductRepo {
 	}
 }
 
-func (r ProductRepo) List(page model.Pagination) (model.Products, error) {
+func (r ProductRepo) List(page common.Pagination) (model.Products, error) {
 
 	products := make([]*model.Product, 0)
 	if err := r.DB.Scopes(common.Paginate(page)).Find(&products).Error; err != nil {
