@@ -35,6 +35,18 @@
 - [ ] Share library across service
 - [x] CRUD with pagination support
 
+Overview
+
+![image Architecture](https://raw.githubusercontent.com/krishnarajvr/microservice-mono-gin-gorm/master/assets/golang-monorepo.png) 
+
+#### Gateway
+Which act as a singe entrypoint for all the services
+- Handle logs,trace,metrics collection
+- Handle Authentication
+- Handle ratelimit, Circuit breaker and many more
+
+#### Common Library
+- Common functionality shared accross the microserices
 
 ###  Go to specific microservice
 ```sh
