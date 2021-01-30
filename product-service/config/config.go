@@ -7,7 +7,12 @@ import (
 	"time"
 
 	"github.com/joeshaw/envdecode"
+	common "github.com/krishnarajvr/micro-common"
 )
+
+func init() {
+	common.LoadEnv()
+}
 
 type Conf struct {
 	Debug  bool `env:"DEBUG,required"`

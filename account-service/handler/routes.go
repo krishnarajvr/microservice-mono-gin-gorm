@@ -40,7 +40,7 @@ func NewHandler(c *Config) {
 
 	g.POST("/signin", h.Signin)
 	g.POST("/signout", h.Signout)
-	g.POST("/tokens", h.Tokens)
+	g.POST("/token", h.Tokens)
 	g.GET("/details", h.Details)
 	g.GET("/users", h.ListUsers)
 

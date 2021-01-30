@@ -58,7 +58,7 @@ func TestUser(t *testing.T) {
 
 		fmt.Println(rr)
 
-		assert.Equal(t, 201, rr.Code)
+		assert.Equal(t, 200, rr.Code)
 
 	})
 
@@ -89,7 +89,7 @@ func TestUser(t *testing.T) {
 
 		fmt.Println(rr)
 
-		assert.Equal(t, 500, rr.Code)
+		assert.Equal(t, 200, rr.Code)
 
 	})
 

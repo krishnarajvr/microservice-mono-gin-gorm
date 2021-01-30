@@ -3,6 +3,8 @@ package service
 import (
 	"testing"
 
+	"micro/app/locale"
+	"micro/config"
 	"micro/model"
 	"micro/repo/mocks"
 
@@ -19,19 +21,24 @@ func TestUser(t *testing.T) {
 		users := model.Users{mockUserResp}
 		userDtos := users.ToDto()
 
-		IUserRepo := new(mocks.IUserRepo)
+		userRepo := new(mocks.IUserRepo)
 
-		IUserRepo.On("ListUsers").Return(users, nil)
+		userRepo.On("ListUsers").Return(users, nil)
+
+		appConf := config.AppConfig()
+		langLocale := locale.Locale{}
+		lang := langLocale.New(appConf.App.Lang)
 
 		us := NewUserService(&ServiceConfig{
-			UserRepo: IUserRepo,
+			UserRepo: userRepo,
+			Lang:     lang,
 		})
 
 		u, err := us.GetAll()
 
 		assert.NoError(t, err)
 		assert.Equal(t, u, userDtos)
-		IUserRepo.AssertExpectations(t)
+		userRepo.AssertExpectations(t)
 	})
 
 }

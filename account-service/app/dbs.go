@@ -30,6 +30,6 @@ func InitDS() (*dbs, error) {
 }
 
 // close to be used in graceful server shutdown
-func (d *dbs) close() error {
+func (d *dbs) Close() error {
 	return nil
 }

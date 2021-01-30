@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	common "github.com/krishnarajvr/micro-common"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,15 +22,24 @@ func TestProduct(t *testing.T) {
 	t.Run("List product", func(t *testing.T) {
 
 		mockProductResp := &model.ProductDto{
-			ID:        1,
-			Name:      "krishna",
-			FirstName: "krishnaraj.vr@gmail.com",
+			ID:          1,
+			Name:        "Product 1",
+			Code:        "Code 1",
+			Description: "Description 1",
 		}
 		dtos := model.ProductDtos{mockProductResp}
 
 		mockProductService := new(mocks.IProductService)
 
-		mockProductService.On("GetAll").Return(dtos, nil)
+		page := common.Pagination{
+			Sort:   "ID",
+			Order:  "DESC",
+			Offset: "0",
+			Limit:  "25",
+			Search: "",
+		}
+
+		mockProductService.On("List", page).Return(dtos, nil)
 
 		// a response recorder for getting written http response
 		rr := httptest.NewRecorder()
@@ -58,7 +68,7 @@ func TestProduct(t *testing.T) {
 
 		fmt.Println(rr)
 
-		assert.Equal(t, 201, rr.Code)
+		assert.Equal(t, 200, rr.Code)
 
 	})
 
@@ -66,7 +76,15 @@ func TestProduct(t *testing.T) {
 
 		mockProductService := new(mocks.IProductService)
 
-		mockProductService.On("GetAll").Return(nil, fmt.Errorf("Some error down call chain"))
+		page := common.Pagination{
+			Sort:   "ID",
+			Order:  "DESC",
+			Offset: "0",
+			Limit:  "25",
+			Search: "",
+		}
+
+		mockProductService.On("List", page).Return(nil, fmt.Errorf("Some error down call chain"))
 
 		// a response recorder for getting written http response
 		rr := httptest.NewRecorder()
@@ -89,7 +107,7 @@ func TestProduct(t *testing.T) {
 
 		fmt.Println(rr)
 
-		assert.Equal(t, 500, rr.Code)
+		assert.Equal(t, 200, rr.Code)
 
 	})
 

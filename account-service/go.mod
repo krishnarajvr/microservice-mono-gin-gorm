@@ -11,10 +11,10 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/kataras/i18n v0.0.6
 	github.com/krishnarajvr/micro-common v0.0.0-20210124050900-814dee29de95
-	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
+	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
 	github.com/lestrrat-go/strftime v1.0.4 // indirect
 	github.com/pressly/goose v2.7.0+incompatible
-	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
+	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/gin-swagger v1.3.0

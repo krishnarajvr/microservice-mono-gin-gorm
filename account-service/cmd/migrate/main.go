@@ -9,7 +9,6 @@ import (
 	"micro/app/database/db"
 	"micro/config"
 
-	common "github.com/krishnarajvr/micro-common"
 	"github.com/pressly/goose"
 )
 
@@ -19,10 +18,6 @@ var (
 	flags = flag.NewFlagSet("migrate", flag.ExitOnError)
 	dir   = flags.String("dir", "./migration", "directory with migration files")
 )
-
-func init() {
-	common.LoadEnv()
-}
 
 func main() {
 	flags.Usage = usage
