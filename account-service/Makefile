@@ -30,6 +30,7 @@ run:
 
 test:
 	go test -v ./module/tenant/service
+	go test -v ./module/tenant
 mock:
-	mockery --dir=module/tenant/service --name=IService  --output=module/tenant/mocks
+	mockery --dir=module/tenant/service --name=ITenantService  --output=module/tenant/mocks
 	mockery --dir=module/tenant/repo --name=ITenantRepo  --output=module/tenant/mocks

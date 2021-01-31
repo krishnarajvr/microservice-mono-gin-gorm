@@ -10,7 +10,7 @@ import (
 
 type HandlerConfig struct {
 	R             *gin.Engine
-	TenantService service.IService
+	TenantService service.ITenantService
 	BaseURL       string
 }
 
