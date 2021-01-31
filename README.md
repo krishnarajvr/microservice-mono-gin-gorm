@@ -64,7 +64,7 @@ go run cmd/migrate/main.go up
 
 ###  Generate API document to the ./doc folder using <strong>swag cli</strong>
 ```sh
- make docs
+ make doc
  
  or
  

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS tenants
     domain         VARCHAR(20)  NOT NULL,
     secret         VARCHAR(100) NOT NULL,
     email          VARCHAR(255) NOT NULL,
-    created_date   DATE         NOT NULL,
+    is_active      bit(1)       DEFAULT 0,
     created_at     TIMESTAMP    NOT NULL,
     updated_at     TIMESTAMP    NULL,
     deleted_at     TIMESTAMP    NULL,

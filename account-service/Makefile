@@ -1,4 +1,4 @@
-.PHONY: keypair migrate-create migrate-up migrate-down migrate-force
+.PHONY: doc run test mock
 
 PWD = $(shell pwd)
 MPATH = $(PWD)/migrations
@@ -7,7 +7,7 @@ PORT = 5432
 # Default number of migrations to execute up or down
 N = 1
 
-docs:
+doc:
 	@echo "---Generate doc files---"
 	swag init -g cmd/api/main.go -o doc
 

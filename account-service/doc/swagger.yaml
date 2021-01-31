@@ -1,0 +1,259 @@
+basePath: /api/v1
+definitions:
+  model.TenantDto:
+    properties:
+      code:
+        example: Tenant1
+        type: string
+      domain:
+        example: EBOOK
+        type: string
+      email:
+        example: tenant@mail.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Tenant 1
+        type: string
+      secret:
+        type: string
+    type: object
+  model.TenantForm:
+    properties:
+      code:
+        example: Tenant1
+        type: string
+      domain:
+        example: EBOOK
+        type: string
+      email:
+        example: tenant@mail.com
+        type: string
+      name:
+        example: Tenant 1
+        type: string
+      secret:
+        type: string
+    type: object
+  swagdto.Error404:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorData'
+      status:
+        example: 404
+        type: integer
+    type: object
+  swagdto.ErrorData:
+    properties:
+      code:
+        example: BAD_REQUEST
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/swagdto.ErrorDetail'
+        type: array
+      message:
+        example: Bad Request
+        type: string
+    type: object
+  swagdto.ErrorDetail:
+    properties:
+      code:
+        example: Required
+        type: string
+      message:
+        example: Name field is required
+        type: string
+      target:
+        example: Name
+        type: string
+    type: object
+  swagdto.TenantListResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagdto.TenantSampleListData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagdto.TenantResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagdto.TenantSampleData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagdto.TenantSampleData:
+    properties:
+      tenant:
+        $ref: '#/definitions/model.TenantDto'
+    type: object
+  swagdto.TenantSampleListData:
+    properties:
+      tenants:
+        items:
+          $ref: '#/definitions/model.TenantDto'
+        type: array
+    type: object
+host: 127.0.0.1:8092
+info:
+  contact: {}
+  description: List APIs of ProductManagement Service
+  termsOfService: http://swagger.io/terms/
+  title: Account Service API Document
+  version: "1.0"
+paths:
+  /tenants:
+    get:
+      consumes:
+      - application/json
+      description: List all existing tenants
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.TenantListResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: List all existing tenants
+      tags:
+      - Tenant
+    post:
+      parameters:
+      - description: Tenant ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.TenantForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.TenantResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Add tenant
+      tags:
+      - Tenant
+  /tenants/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.TenantResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Delete a tenant
+      tags:
+      - Tenant
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.TenantResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Get a tenant
+      tags:
+      - Tenant
+    patch:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Tenant ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.TenantForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.TenantResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Patch tenant
+      tags:
+      - Tenant
+    post:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Tenant ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.TenantForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagdto.TenantResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Update tenant
+      tags:
+      - Tenant
+swagger: "2.0"

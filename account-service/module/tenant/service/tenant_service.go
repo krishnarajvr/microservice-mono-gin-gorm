@@ -47,6 +47,14 @@ func (s *Service) List(page common.Pagination) (model.TenantDtos, error) {
 
 	log.Println(s.Lang.Get("hi", "GetAll"))
 
+	m := map[string]interface{}{
+		"Name": "John Doe",
+		"Age":  66,
+	}
+
+	s.Lang.SetLang("en-US")
+	log.Println(s.Lang.Get("intro", m))
+
 	tenantsDto := tenants.ToDto()
 
 	return tenantsDto, err

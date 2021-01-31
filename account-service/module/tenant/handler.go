@@ -20,7 +20,7 @@ type Handler struct {
 // ListTenants godoc
 // @Summary List all existing tenants
 // @Description List all existing tenants
-// @Tags tenant
+// @Tags Tenant
 // @Accept  json
 // @Produce  json
 // @Param Authorization header string true "Token"
@@ -51,6 +51,7 @@ func (h *Handler) ListTenants(c *gin.Context) {
 
 // @Summary Get a tenant
 // @Produce  json
+// @Tags Tenant
 // @Param id path int true "ID"
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagdto.TenantResponse
@@ -78,6 +79,7 @@ func (h *Handler) GetTenant(c *gin.Context) {
 
 // @Summary Add tenant
 // @Produce  json
+// @Tags Tenant
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagdto.TenantResponse
@@ -102,6 +104,7 @@ func (h *Handler) AddTenant(c *gin.Context) {
 
 // @Summary Update tenant
 // @Produce  json
+// @Tags Tenant
 // @Param id path int true "ID"
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
@@ -137,6 +140,7 @@ func (h *Handler) UpdateTenant(c *gin.Context) {
 
 // @Summary Patch tenant
 // @Produce  json
+// @Tags Tenant
 // @Param id path int true "ID"
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
@@ -172,6 +176,7 @@ func (h *Handler) PatchTenant(c *gin.Context) {
 
 // @Summary Delete a tenant
 // @Produce  json
+// @Tags Tenant
 // @Param id path int true "ID"
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagdto.TenantResponse
