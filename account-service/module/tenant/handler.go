@@ -1,8 +1,9 @@
-package handler
+package tenant
 
 import (
 	"log"
-	"micro/model"
+	"micro/module/tenant/model"
+	"micro/module/tenant/service"
 
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,10 @@ import (
 	logr "github.com/sirupsen/logrus"
 	"github.com/unknwon/com"
 )
+
+type Handler struct {
+	TenantService service.ITenantService
+}
 
 // ListTenants godoc
 // @Summary List all existing tenants

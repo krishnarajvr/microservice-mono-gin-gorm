@@ -2,11 +2,12 @@ package service
 
 import (
 	"log"
-	"micro/app/locale"
-	"micro/model"
-	"micro/repo"
 
 	common "github.com/krishnarajvr/micro-common"
+
+	"micro/app/locale"
+	"micro/module/tenant/model"
+	"micro/module/tenant/repo"
 )
 
 type ITenantService interface {
@@ -18,19 +19,24 @@ type ITenantService interface {
 	Delete(id int) (*model.TenantDto, error)
 }
 
-type TenantService struct {
+type ServiceConfig struct {
 	TenantRepo repo.ITenantRepo
 	Lang       *locale.Locale
 }
 
-func NewTenantService(c *ServiceConfig) ITenantService {
-	return &TenantService{
+type Service struct {
+	TenantRepo repo.ITenantRepo
+	Lang       *locale.Locale
+}
+
+func NewService(c ServiceConfig) ITenantService {
+	return &Service{
 		TenantRepo: c.TenantRepo,
 		Lang:       c.Lang,
 	}
 }
 
-func (s *TenantService) List(page common.Pagination) (model.TenantDtos, error) {
+func (s *Service) List(page common.Pagination) (model.TenantDtos, error) {
 
 	tenants, err := s.TenantRepo.List(page)
 
@@ -46,7 +52,7 @@ func (s *TenantService) List(page common.Pagination) (model.TenantDtos, error) {
 	return tenantsDto, err
 }
 
-func (s *TenantService) Get(id int) (*model.TenantDto, error) {
+func (s *Service) Get(id int) (*model.TenantDto, error) {
 
 	tenant, err := s.TenantRepo.Get(id)
 
@@ -64,7 +70,7 @@ func (s *TenantService) Get(id int) (*model.TenantDto, error) {
 	return tenantDto, nil
 }
 
-func (s *TenantService) Add(form *model.TenantForm) (*model.TenantDto, error) {
+func (s *Service) Add(form *model.TenantForm) (*model.TenantDto, error) {
 
 	tenant, err := s.TenantRepo.Add(form)
 
@@ -82,7 +88,7 @@ func (s *TenantService) Add(form *model.TenantForm) (*model.TenantDto, error) {
 	return tenantDto, nil
 }
 
-func (s *TenantService) Update(form *model.TenantForm, id int) (*model.TenantDto, error) {
+func (s *Service) Update(form *model.TenantForm, id int) (*model.TenantDto, error) {
 
 	tenant, err := s.TenantRepo.Update(form, id)
 
@@ -100,7 +106,7 @@ func (s *TenantService) Update(form *model.TenantForm, id int) (*model.TenantDto
 	return tenantDto, nil
 }
 
-func (s *TenantService) Patch(form *model.TenantPatchForm, id int) (*model.TenantDto, error) {
+func (s *Service) Patch(form *model.TenantPatchForm, id int) (*model.TenantDto, error) {
 
 	tenant, err := s.TenantRepo.Patch(form, id)
 
@@ -118,7 +124,7 @@ func (s *TenantService) Patch(form *model.TenantPatchForm, id int) (*model.Tenan
 	return tenantDto, nil
 }
 
-func (s *TenantService) Delete(id int) (*model.TenantDto, error) {
+func (s *Service) Delete(id int) (*model.TenantDto, error) {
 
 	tenant, err := s.TenantRepo.Delete(id)
 

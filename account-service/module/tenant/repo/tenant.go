@@ -1,7 +1,7 @@
 package repo
 
 import (
-	"micro/model"
+	"micro/module/tenant/model"
 
 	"gorm.io/gorm"
 

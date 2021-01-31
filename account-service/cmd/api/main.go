@@ -4,7 +4,9 @@ import (
 	"log"
 
 	"micro/app"
+	"micro/app/locale"
 	"micro/config"
+	"micro/module"
 )
 
 // @title Account Service API Document
@@ -16,18 +18,34 @@ import (
 // @BasePath /api/v1
 func main() {
 
-	appConf := config.AppConfig()
+	cfg := config.AppConfig()
 	log.Println("Starting server...")
 
 	// initialize data sources
-	ds, err := app.InitDS()
+	dbs, err := app.InitDS()
 
 	if err != nil {
 		log.Fatalf("Unable to initialize data sources: %v\n", err)
 	}
 
 	//Add dependency injection
-	ginApp, err := app.Inject(ds)
+	router, err := app.InitRouter()
 
-	ginApp.Run(":" + appConf.Server.Port)
+	langLocale := locale.Locale{}
+	lang := langLocale.New(cfg.App.Lang)
+
+	appConfig := app.AppConfig{
+		Router:  router,
+		BaseURL: cfg.App.BaseURL,
+		Lang:    lang,
+		Dbs:     dbs,
+	}
+
+	module.Inject(appConfig)
+
+	if err != nil {
+		log.Fatalf("Unable to inject dependencies: %v\n", err)
+	}
+
+	router.Run(":" + cfg.Server.Port)
 }

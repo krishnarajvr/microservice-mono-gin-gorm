@@ -9,12 +9,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type dbs struct {
+type Dbs struct {
 	DB *gorm.DB
 }
 
 // InitDS establishes connections to fields in dataSources
-func InitDS() (*dbs, error) {
+func InitDS() (*Dbs, error) {
 	appConf := config.AppConfig()
 	db, err := lgorm.New(appConf)
 
@@ -24,12 +24,12 @@ func InitDS() (*dbs, error) {
 		panic(err)
 	}
 
-	return &dbs{
+	return &Dbs{
 		DB: db,
 	}, nil
 }
 
 // close to be used in graceful server shutdown
-func (d *dbs) Close() error {
+func (d *Dbs) Close() error {
 	return nil
 }

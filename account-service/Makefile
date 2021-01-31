@@ -29,8 +29,7 @@ run:
 	go run cmd/api/main.go
 
 test:
-	go test -v ./handler
-	go test -v ./service
+	go test -v ./module/tenant/service
 mock:
-	mockery --dir=service --name=IUserService  --output=service/mocks
-	mockery --dir=repo --name=IUserRepo  --output=repo/mocks
+	mockery --dir=module/tenant/service --name=IService  --output=module/tenant/mocks
+	mockery --dir=module/tenant/repo --name=ITenantRepo  --output=module/tenant/mocks
