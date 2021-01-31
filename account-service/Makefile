@@ -1,8 +1,7 @@
 .PHONY: keypair migrate-create migrate-up migrate-down migrate-force
 
 PWD = $(shell pwd)
-ACCTPATH = $(PWD)/account
-MPATH = $(ACCTPATH)/migrations
+MPATH = $(PWD)/migrations
 PORT = 5432
 
 # Default number of migrations to execute up or down
@@ -14,7 +13,8 @@ docs:
 
 migrate-create:
 	@echo "---Creating migration files---"
-	migrate create -ext sql -dir $(MPATH) -seq -digits 5 $(NAME)
+	# another - migrate create -ext sql -dir $(MPATH) -seq -digits 5 $(NAME)
+	go run cmd/migrate/main.go create $(NAME) sql
 
 migrate-up:
 	go run cmd/migrate/main.go up

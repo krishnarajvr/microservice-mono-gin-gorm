@@ -19,10 +19,9 @@ func Inject(d *dbs) (*gin.Engine, error) {
 	//Initialize all common classes
 	appConf := config.AppConfig()
 
-
 	userRepo := repo.NewUserRepo(d.DB)
+	tenantRepo := repo.NewTenantRepo(d.DB)
 
-	
 	langLocale := locale.Locale{}
 	lang := langLocale.New(appConf.App.Lang)
 
@@ -31,15 +30,21 @@ func Inject(d *dbs) (*gin.Engine, error) {
 		Lang:     lang,
 	})
 
+	tenantService := service.NewTenantService(&service.ServiceConfig{
+		TenantRepo: tenantRepo,
+		Lang:       lang,
+	})
+
 	// initialize gin.Engine
 	router := gin.Default()
 	router.Use(middleware.LoggerToFile(appConf.Log.LogFilePath, appConf.Log.LogFileName))
 	router.Use(gin.Recovery())
 
 	handler.NewHandler(&handler.Config{
-		R:           router,
-		UserService: userService,
-		BaseURL:     appConf.App.BaseURL,
+		R:             router,
+		UserService:   userService,
+		TenantService: tenantService,
+		BaseURL:       appConf.App.BaseURL,
 	})
 
 	return router, nil

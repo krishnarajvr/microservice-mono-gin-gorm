@@ -6,6 +6,7 @@ import (
 )
 
 type ServiceConfig struct {
-	UserRepo repo.IUserRepo
-	Lang     *locale.Locale
+	UserRepo   repo.IUserRepo
+	TenantRepo repo.ITenantRepo
+	Lang       *locale.Locale
 }
