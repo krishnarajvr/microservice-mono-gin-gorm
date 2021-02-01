@@ -3,6 +3,7 @@ package module
 import (
 	"micro/app"
 	"micro/module/tenant"
+	"micro/module/user"
 
 	_ "micro/doc"
 
@@ -12,6 +13,7 @@ import (
 
 func Inject(appConfig app.AppConfig) {
 
+	user.Inject(appConfig)
 	tenant.Inject(appConfig)
 
 	//Init Swagger routes
