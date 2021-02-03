@@ -1,6 +1,8 @@
 package model
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -8,47 +10,54 @@ type Users []*User
 
 type User struct {
 	gorm.Model
-	Name   string
-	Code   string
-	Email  string
-	Domain string
-	Secret string
-}
-
-func (b User) ToDto() *UserDto {
-	return &UserDto{
-		ID:     b.ID,
-		Name:   b.Name,
-		Code:   b.Code,
-		Domain: b.Domain,
-		Email:  b.Email,
-	}
+	TenantId  uint
+	Name      string
+	Email     string
+	FirstName string
+	LastName  string
+	IsActive  bool
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type UserDtos []*UserDto
 
 type UserDto struct {
-	ID     uint   `json:"id" example:"1"`
-	Name   string `json:"name" example:"User 1"`
-	Domain string `json:"domain" example:"EBOOK"`
-	Code   string `json:"code" example:"User1"`
-	Email  string `json:"email" example:"user@mail.com"`
-	Secret string `json:"secret"`
+	ID        uint      `json:"id" example:"1"`
+	Name      string    `json:"name" example:"User 1"`
+	Email     string    `json:"email" example:"user@mail.com"`
+	FirstName string    `json:"firstName" example:"John"`
+	LastName  string    `json:"lastName" example:"Doe"`
+	IsActive  bool      `json:"isActive" example:true`
+	CreatedAt time.Time `json:"createdAt" example:"2021-02-02T02:52:24Z"`
+	UpdatedAt time.Time `json:"updatedAt" example:"2021-02-02T02:52:24Z"`
+}
+
+func (b User) ToDto() *UserDto {
+	return &UserDto{
+		ID:        b.ID,
+		Name:      b.Name,
+		Email:     b.Email,
+		FirstName: b.FirstName,
+		LastName:  b.LastName,
+		IsActive:  b.IsActive,
+		CreatedAt: b.CreatedAt,
+		UpdatedAt: b.UpdatedAt,
+	}
 }
 
 type UserForm struct {
-	Name   string `json:"name" example:"User 1" valid:"Required;MaxSize(100)"`
-	Code   string `json:"code" example:"User1" valid:"Required;MaxSize(100)"`
-	Domain string `json:"domain" example:"EBOOK" valid:"Required;MaxSize(100)"`
-	Email  string `json:"email" example:"user@mail.com" valid:"Required;MaxSize(255)"`
-	Secret string `json:"secret"`
+	Name      string `json:"name" example:"User 1" valid:"Required;MinSize(2);MaxSize(255)"`
+	Email     string `json:"email" example:"john@mail.com" valid:"Required;Email;"`
+	FirstName string `json:"code" example:"John" valid:"Required;MinSize(2);MaxSize(255)"`
+	LastName  string `json:"domain" example:"Doe" valid:"MaxSize(255)"`
 }
 
 type UserPatchForm struct {
-	Name   string `json:"name" example:"User 1" valid:"MaxSize(100)"`
-	Code   string `json:"code" example:"User1" valid:"MaxSize(100)"`
-	Domain string `json:"code" example:"EBOOK" valid:"MaxSize(100)"`
-	Email  string `json:"email" example:"user@mail.com" valid:"MaxSize(255)"`
+	Name      string `json:"name" example:"User 1" valid:"MinSize(2);MaxSize(255)"`
+	Email     string `json:"email" example:"john@mail.com" valid:"Email;"`
+	FirstName string `json:"code" example:"John" valid:"MinSize(2);MaxSize(255)"`
+	LastName  string `json:"domain" example:"Doe" valid:"MaxSize(255)"`
 }
 
 func (bs Users) ToDto() UserDtos {
@@ -62,17 +71,18 @@ func (bs Users) ToDto() UserDtos {
 
 func (f *UserForm) ToModel() (*User, error) {
 	return &User{
-		Name:   f.Name,
-		Code:   f.Code,
-		Email:  f.Email,
-		Secret: "123",
+		Name:      f.Name,
+		Email:     f.Email,
+		FirstName: f.FirstName,
+		LastName:  f.LastName,
 	}, nil
 }
 
 func (f *UserPatchForm) ToModel() (*User, error) {
 	return &User{
-		Name:  f.Name,
-		Code:  f.Code,
-		Email: f.Email,
+		Name:      f.Name,
+		Email:     f.Email,
+		FirstName: f.FirstName,
+		LastName:  f.LastName,
 	}, nil
 }

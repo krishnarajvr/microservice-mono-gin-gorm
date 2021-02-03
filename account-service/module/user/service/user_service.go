@@ -47,17 +47,14 @@ func (s *Service) List(page common.Pagination) (model.UserDtos, *common.PageResu
 
 	//Multi language Support Demo
 	log.Println(s.Lang.Get("hi", "GetAll"))
-
 	m := map[string]interface{}{
 		"Name": "John Doe",
 		"Age":  66,
 	}
-
 	s.Lang.SetLang("en-US")
 	log.Println(s.Lang.Get("intro", m))
 
 	//common.Log(s.Contex, s.Lang.Get("intro", m))
-
 	usersDto := users.ToDto()
 
 	return usersDto, pageResult, err

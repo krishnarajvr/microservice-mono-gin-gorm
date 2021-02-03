@@ -4,6 +4,7 @@ import (
 	"log"
 )
 
+//InitRoutes for the module
 func InitRoutes(c HandlerConfig) {
 	h := Handler{
 		UserService: c.UserService,
@@ -19,5 +20,4 @@ func InitRoutes(c HandlerConfig) {
 	g.DELETE("/users/:id", h.DeleteUser)
 	g.POST("/users", h.AddUser)
 	g.GET("/users", h.ListUsers)
-
 }

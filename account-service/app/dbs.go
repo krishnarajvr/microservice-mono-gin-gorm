@@ -29,7 +29,7 @@ func InitDS() (*Dbs, error) {
 	}, nil
 }
 
-// close to be used in graceful server shutdown
+//Close to be used in graceful server shutdown
 func (d *Dbs) Close() error {
 	return nil
 }

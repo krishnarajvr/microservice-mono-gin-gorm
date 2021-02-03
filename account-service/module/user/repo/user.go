@@ -69,6 +69,8 @@ func (r UserRepo) Delete(id int) (*model.User, error) {
 
 func (r UserRepo) Add(form *model.UserForm) (*model.User, error) {
 	user, err := form.ToModel()
+	//Todo - Get from token
+	user.TenantId = 1
 
 	if err != nil {
 		return nil, err

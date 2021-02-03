@@ -11,10 +11,10 @@ import (
 
 // @title Account Service API Document
 // @version 1.0
-// @description List APIs of ProductManagement Service
+// @description List APIs of Account Service
 // @termsOfService http://swagger.io/terms/
 
-// @host 127.0.0.1:8092
+// @host 127.0.0.1:8082
 // @BasePath /api/v1
 func main() {
 

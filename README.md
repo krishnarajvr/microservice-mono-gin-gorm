@@ -26,14 +26,15 @@
 - [x] Integration Test
 - [x] Standard request and response and errors
 - [x] Common form validation 
-- [x] Health endpoint
 - [x] Krakend Gateway integration
-- [ ] Common error messages
+- [x] Common error messages
+- [x] Share library across service
+- [x] CRUD with pagination support
+- [x] module support for service
+- [ ] Health endpoint
 - [ ] Docker
 - [ ] Docker Compose
 - [ ] Kubernetes
-- [ ] Share library across service
-- [x] CRUD with pagination support
 
 ## Overview
 
@@ -50,8 +51,15 @@ Which act as a singe entrypoint for all the services
 
 ###  Go to specific microservice
 ```sh
- cd product-service
+ cd account-service
 ```
+
+###  To setup packages locally
+```sh
+ go mod vendor
+```
+
+
 ### Change the config in .env for database and migrate
 
 ```sh
@@ -92,71 +100,76 @@ make mock
 make test 
 ```
 
+### Swagger
+
+- Access the url http://localhost:8082/swagger/index.html
+
 ## Folder Structure
 
 ```sh
-├── product-service
-├── README.md
-├── .env  # Environment configuration
-└── user-service
-    ├── app  # App specific folders
-    │   ├── database
-    │   │   ├── adapter
-    │   │   │   ├── db
-    │   │   │   │   └── db.go
-    │   │   │   └── gorm
-    │   │   │       └── gorm.go
-    │   │   ├── database.go
-    │   │   └── inject.go
-    │   ├── locale
-    │   │   ├── inject.go
-    │   │   └── locale.go
-    │   └── middleware
-    │       └── logger.go
-    ├── cmd  # Any Command line running functions
-    │   ├── api
-    │   │   └── main.go  # Starting point for the applicatioin
-    │   └── migrate
-    │       └── main.go  # Migrate util for db
-    ├── doc  # Swagger docs auto generate available at /swagger/index.html
-    │   ├── docs.go
-    │   ├── swagdto
-    │   │   └── user.go
-    │   ├── swagger.json
-    │   └── swagger.yaml
-    ├── common # Common modules
-    │   ├── common.go 
-    │   ├── error.go # Error responses
-    │   ├── middleware 
-    │   ├── response.go # Response structure
-    │   ├── util 
-    │   └── validation  # Validation utils
-    ├── config
-    │   └── config.go
-    ├── locale  # Locale language support
-    │   ├── el-GR
-    │   │   └── example.yml
-    │   ├── en-US
-    │   │   └── example.yml
-    │   └── zh-CN
-    │       └── example.yml
-    ├── log
-    │   ├── micro.log -> micro.log.20201208.log
-    │   └── micro.log.20201208.log
-    ├── go.mod
-    ├── go.sum
-    ├── migration # Migration scripts
-    │   └── 20190805170000_create_user_table.sql
-    ├── model   # Contain model and dtos
-    │   └── user.go
-    ├── repo
-    │   ├── mocks # Mock objects
-    │   │   └── IUserRepo.go
-    │   └── user.go
-    ├── handler # define the rest endpoints
-    │   ├── user.go
-    │   └── handler.go
-    └── service # Services do the business logic
-        └── user.go
-
+├── app
+│   ├── app.go  # App Intitialization
+│   ├── database
+│   │   ├── db
+│   │   │   └── db.go
+│   │   └── gorm
+│   │       └── gorm.go
+│   ├── dbs.go # Database Intitialization
+│   └── locale
+│       └── locale.go
+├── cmd  # Starting point for any application
+│   ├── api
+│   │   └── main.go # Main application start
+│   └── migrate
+│       └── main.go # Migration start
+├── config
+│   └── config.go # App configuration. Any environment specific will get from .env
+├── go.mod
+├── go.sum
+├── locale  # Multi language support for the API
+│   ├── el-GR
+│   │   └── example.yml
+│   ├── en-US
+│   │   └── example.yml
+│   └── zh-CN
+│       └── example.yml
+├── log  # Log folder
+│   └── micro.log
+├── Makefile  # Common command 
+├── migration # Migration files
+│   ├── 20190805170000_create_user_table.sql
+│   └── 20210130204915_create_tenant_table.sql
+├── module  # Module contain actual business logic
+│   ├── module.go
+│   └── tenant  # Tenant Module
+│   │   ├── handler.go
+│   │   ├── handler_test.go
+│   │   ├── inject.go
+│   │   ├── mocks
+│   │   │   ├── ITenantRepo.go
+│   │   │   └── ITenantService.go
+│   │   ├── model
+│   │   │   └── tenant.go
+│   │   ├── repo
+│   │   │   └── tenant.go
+│   │   ├── routes.go
+│   │   └── service
+│   │       ├── tenant_service.go
+│   │       └── tenant_service_test.go
+│   └── user # Tenant Module
+│       ├── handler.go
+│       ├── handler_test.go
+│       ├── inject.go
+│       ├── mocks
+│       │   ├── IUserRepo.go
+│       │   └── IUserService.go
+│       ├── model
+│       │   └── user.go
+│       ├── repo
+│       │   └── user.go
+│       ├── routes.go
+│       └── service
+│           ├── user_service.go
+│           └── user_service_test.go
+└── README.md
 ```

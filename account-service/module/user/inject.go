@@ -14,6 +14,7 @@ type HandlerConfig struct {
 	BaseURL     string
 }
 
+//Inject dependencies
 func Inject(appConfig app.AppConfig) {
 
 	userRepo := repo.NewUserRepo(appConfig.Dbs.DB)

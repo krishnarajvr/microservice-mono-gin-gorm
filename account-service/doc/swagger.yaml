@@ -5,6 +5,9 @@ definitions:
       code:
         example: Tenant1
         type: string
+      createdAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
       domain:
         example: EBOOK
         type: string
@@ -12,12 +15,15 @@ definitions:
         example: tenant@mail.com
         type: string
       id:
-        example: 1
+        example: 123
         type: integer
+      isActive:
+        type: boolean
       name:
         example: Tenant 1
         type: string
-      secret:
+      updatedAt:
+        example: "2021-02-02T02:52:24Z"
         type: string
     type: object
   model.TenantForm:
@@ -34,7 +40,46 @@ definitions:
       name:
         example: Tenant 1
         type: string
-      secret:
+    type: object
+  model.UserDto:
+    properties:
+      createdAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
+      email:
+        example: user@mail.com
+        type: string
+      firstName:
+        example: John
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        type: boolean
+      lastName:
+        example: Doe
+        type: string
+      name:
+        example: User 1
+        type: string
+      updatedAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
+    type: object
+  model.UserForm:
+    properties:
+      code:
+        example: John
+        type: string
+      domain:
+        example: Doe
+        type: string
+      email:
+        example: john@mail.com
+        type: string
+      name:
+        example: User 1
         type: string
     type: object
   swagdto.Error404:
@@ -72,42 +117,74 @@ definitions:
         example: Name
         type: string
     type: object
-  swagdto.TenantListResponse:
+  swagger.TenantListResponse:
     properties:
       data:
-        $ref: '#/definitions/swagdto.TenantSampleListData'
+        $ref: '#/definitions/swagger.TenantSampleListData'
       error:
         type: object
       status:
         example: 200
         type: integer
     type: object
-  swagdto.TenantResponse:
+  swagger.TenantResponse:
     properties:
       data:
-        $ref: '#/definitions/swagdto.TenantSampleData'
+        $ref: '#/definitions/swagger.TenantSampleData'
       error:
         type: object
       status:
         example: 200
         type: integer
     type: object
-  swagdto.TenantSampleData:
+  swagger.TenantSampleData:
     properties:
       tenant:
         $ref: '#/definitions/model.TenantDto'
     type: object
-  swagdto.TenantSampleListData:
+  swagger.TenantSampleListData:
     properties:
       tenants:
         items:
           $ref: '#/definitions/model.TenantDto'
         type: array
     type: object
-host: 127.0.0.1:8092
+  swagger.UserListResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagger.UserSampleListData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagger.UserResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagger.UserSampleData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagger.UserSampleData:
+    properties:
+      user:
+        $ref: '#/definitions/model.UserDto'
+    type: object
+  swagger.UserSampleListData:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/model.UserDto'
+        type: array
+    type: object
+host: 127.0.0.1:8082
 info:
   contact: {}
-  description: List APIs of ProductManagement Service
+  description: List APIs of Account Service
   termsOfService: http://swagger.io/terms/
   title: Account Service API Document
   version: "1.0"
@@ -129,7 +206,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.TenantListResponse'
+            $ref: '#/definitions/swagger.TenantListResponse'
         "404":
           description: Not Found
           schema:
@@ -151,7 +228,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.TenantResponse'
+            $ref: '#/definitions/swagger.TenantResponse'
         "404":
           description: Not Found
           schema:
@@ -173,7 +250,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.TenantResponse'
+            $ref: '#/definitions/swagger.TenantResponse'
         "404":
           description: Not Found
           schema:
@@ -194,7 +271,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.TenantResponse'
+            $ref: '#/definitions/swagger.TenantResponse'
         "404":
           description: Not Found
           schema:
@@ -221,7 +298,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.TenantResponse'
+            $ref: '#/definitions/swagger.TenantResponse'
         "404":
           description: Not Found
           schema:
@@ -248,7 +325,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.TenantResponse'
+            $ref: '#/definitions/swagger.TenantResponse'
         "404":
           description: Not Found
           schema:
@@ -256,4 +333,148 @@ paths:
       summary: Update tenant
       tags:
       - Tenant
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: List all existing users
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.UserListResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: List all existing users
+      tags:
+      - User
+    post:
+      parameters:
+      - description: User ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.UserResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Add user
+      tags:
+      - User
+  /users/{id}:
+    delete:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.UserResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Delete a user
+      tags:
+      - User
+    get:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.UserResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Get a user
+      tags:
+      - User
+    patch:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.UserResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Patch user
+      tags:
+      - User
+    post:
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User ID
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.UserResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Update user
+      tags:
+      - User
 swagger: "2.0"

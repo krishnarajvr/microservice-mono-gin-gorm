@@ -5,6 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
+	guuid "github.com/google/uuid"
 	common "github.com/krishnarajvr/micro-common"
 )
 
@@ -61,6 +62,8 @@ func (r TenantRepo) Delete(id int) (*model.Tenant, error) {
 
 func (r TenantRepo) Add(form *model.TenantForm) (*model.Tenant, error) {
 	tenant, err := form.ToModel()
+	id := guuid.New()
+	tenant.Secret = id.String()
 
 	if err != nil {
 		return nil, err

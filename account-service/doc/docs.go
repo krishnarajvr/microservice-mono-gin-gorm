@@ -51,7 +51,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.TenantListResponse"
+                            "$ref": "#/definitions/swagger.TenantListResponse"
                         }
                     },
                     "404": {
@@ -85,7 +85,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.TenantResponse"
+                            "$ref": "#/definitions/swagger.TenantResponse"
                         }
                     },
                     "404": {
@@ -119,7 +119,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.TenantResponse"
+                            "$ref": "#/definitions/swagger.TenantResponse"
                         }
                     },
                     "404": {
@@ -160,7 +160,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.TenantResponse"
+                            "$ref": "#/definitions/swagger.TenantResponse"
                         }
                     },
                     "404": {
@@ -192,7 +192,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.TenantResponse"
+                            "$ref": "#/definitions/swagger.TenantResponse"
                         }
                     },
                     "404": {
@@ -233,7 +233,227 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.TenantResponse"
+                            "$ref": "#/definitions/swagger.TenantResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "List all existing users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "List all existing users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.UserListResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Add user",
+                "parameters": [
+                    {
+                        "description": "User ID",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.UserResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get a user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.UserResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User ID",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.UserResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete a user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.UserResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Patch user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User ID",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.UserResponse"
                         }
                     },
                     "404": {
@@ -254,6 +474,10 @@ var doc = `{
                     "type": "string",
                     "example": "Tenant1"
                 },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
+                },
                 "domain": {
                     "type": "string",
                     "example": "EBOOK"
@@ -264,14 +488,18 @@ var doc = `{
                 },
                 "id": {
                     "type": "integer",
-                    "example": 1
+                    "example": 123
+                },
+                "isActive": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string",
                     "example": "Tenant 1"
                 },
-                "secret": {
-                    "type": "string"
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
                 }
             }
         },
@@ -293,9 +521,63 @@ var doc = `{
                 "name": {
                     "type": "string",
                     "example": "Tenant 1"
+                }
+            }
+        },
+        "model.UserDto": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
                 },
-                "secret": {
-                    "type": "string"
+                "email": {
+                    "type": "string",
+                    "example": "user@mail.com"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "User 1"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
+                }
+            }
+        },
+        "model.UserForm": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "domain": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "john@mail.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "User 1"
                 }
             }
         },
@@ -350,11 +632,11 @@ var doc = `{
                 }
             }
         },
-        "swagdto.TenantListResponse": {
+        "swagger.TenantListResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/swagdto.TenantSampleListData"
+                    "$ref": "#/definitions/swagger.TenantSampleListData"
                 },
                 "error": {
                     "type": "object"
@@ -365,11 +647,11 @@ var doc = `{
                 }
             }
         },
-        "swagdto.TenantResponse": {
+        "swagger.TenantResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/swagdto.TenantSampleData"
+                    "$ref": "#/definitions/swagger.TenantSampleData"
                 },
                 "error": {
                     "type": "object"
@@ -380,7 +662,7 @@ var doc = `{
                 }
             }
         },
-        "swagdto.TenantSampleData": {
+        "swagger.TenantSampleData": {
             "type": "object",
             "properties": {
                 "tenant": {
@@ -388,13 +670,62 @@ var doc = `{
                 }
             }
         },
-        "swagdto.TenantSampleListData": {
+        "swagger.TenantSampleListData": {
             "type": "object",
             "properties": {
                 "tenants": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.TenantDto"
+                    }
+                }
+            }
+        },
+        "swagger.UserListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagger.UserSampleListData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "swagger.UserResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagger.UserSampleData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "swagger.UserSampleData": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/model.UserDto"
+                }
+            }
+        },
+        "swagger.UserSampleListData": {
+            "type": "object",
+            "properties": {
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.UserDto"
                     }
                 }
             }
@@ -414,11 +745,11 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "127.0.0.1:8092",
+	Host:        "127.0.0.1:8082",
 	BasePath:    "/api/v1",
 	Schemes:     []string{},
 	Title:       "Account Service API Document",
-	Description: "List APIs of ProductManagement Service",
+	Description: "List APIs of Account Service",
 }
 
 type s struct{}

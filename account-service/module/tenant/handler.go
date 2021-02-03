@@ -25,7 +25,7 @@ type Handler struct {
 // @Produce  json
 // @Param Authorization header string true "Token"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.TenantListResponse
+// @Success 200 {object} swagger.TenantListResponse
 // @Router /tenants [get]
 func (h *Handler) ListTenants(c *gin.Context) {
 
@@ -54,7 +54,7 @@ func (h *Handler) ListTenants(c *gin.Context) {
 // @Tags Tenant
 // @Param id path int true "ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.TenantResponse
+// @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [get]
 func (h *Handler) GetTenant(c *gin.Context) {
 
@@ -82,7 +82,7 @@ func (h *Handler) GetTenant(c *gin.Context) {
 // @Tags Tenant
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.TenantResponse
+// @Success 200 {object} swagger.TenantResponse
 // @Router /tenants [post]
 func (h *Handler) AddTenant(c *gin.Context) {
 	var form model.TenantForm
@@ -108,7 +108,7 @@ func (h *Handler) AddTenant(c *gin.Context) {
 // @Param id path int true "ID"
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.TenantResponse
+// @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [post]
 func (h *Handler) UpdateTenant(c *gin.Context) {
 
@@ -144,7 +144,7 @@ func (h *Handler) UpdateTenant(c *gin.Context) {
 // @Param id path int true "ID"
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.TenantResponse
+// @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [patch]
 func (h *Handler) PatchTenant(c *gin.Context) {
 
@@ -179,7 +179,7 @@ func (h *Handler) PatchTenant(c *gin.Context) {
 // @Tags Tenant
 // @Param id path int true "ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.TenantResponse
+// @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [delete]
 func (h *Handler) DeleteTenant(c *gin.Context) {
 

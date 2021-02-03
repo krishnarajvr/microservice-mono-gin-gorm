@@ -25,7 +25,7 @@ type Handler struct {
 // @Produce  json
 // @Param Authorization header string true "Token"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.UserListResponse
+// @Success 200 {object} swagger.UserListResponse
 // @Router /users [get]
 func (h *Handler) ListUsers(c *gin.Context) {
 
@@ -54,7 +54,7 @@ func (h *Handler) ListUsers(c *gin.Context) {
 // @Tags User
 // @Param id path int true "ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.UserResponse
+// @Success 200 {object} swagger.UserResponse
 // @Router /users/{id} [get]
 func (h *Handler) GetUser(c *gin.Context) {
 
@@ -80,9 +80,12 @@ func (h *Handler) GetUser(c *gin.Context) {
 // @Summary Add user
 // @Produce  json
 // @Tags User
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 // @Param user body model.UserForm true "User ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.UserResponse
+// @Success 200 {object} swagger.UserResponse
 // @Router /users [post]
 func (h *Handler) AddUser(c *gin.Context) {
 	var form model.UserForm
@@ -108,7 +111,7 @@ func (h *Handler) AddUser(c *gin.Context) {
 // @Param id path int true "ID"
 // @Param user body model.UserForm true "User ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.UserResponse
+// @Success 200 {object} swagger.UserResponse
 // @Router /users/{id} [post]
 func (h *Handler) UpdateUser(c *gin.Context) {
 
@@ -144,7 +147,7 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 // @Param id path int true "ID"
 // @Param user body model.UserForm true "User ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.UserResponse
+// @Success 200 {object} swagger.UserResponse
 // @Router /users/{id} [patch]
 func (h *Handler) PatchUser(c *gin.Context) {
 
@@ -179,7 +182,7 @@ func (h *Handler) PatchUser(c *gin.Context) {
 // @Tags User
 // @Param id path int true "ID"
 // @Failure 404 {object} swagdto.Error404
-// @Success 200 {object} swagdto.UserResponse
+// @Success 200 {object} swagger.UserResponse
 // @Router /users/{id} [delete]
 func (h *Handler) DeleteUser(c *gin.Context) {
 
