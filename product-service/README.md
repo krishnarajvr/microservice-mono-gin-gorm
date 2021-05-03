@@ -19,11 +19,11 @@
 ### Create a migration file - if required
 
 ```
-make migrate-create NAME=create-user
+make migrate-create NAME=create-product
 
 OR
 
-go run cmd/migrate/main.go create create-vendor sql
+go run cmd/migrate/main.go create create-product sql
 
 ```
 
@@ -43,6 +43,8 @@ make migrate-up
 ```sh
 make run 
 ```
+
+Make sure you run ```make migrate-up``` before the running
 
 ###  Generate mock files
 ```sh
