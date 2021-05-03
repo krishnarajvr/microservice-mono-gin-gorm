@@ -10,8 +10,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"micro/config"
+
 	"github.com/gin-gonic/gin"
 	common "github.com/krishnarajvr/micro-common"
+	"github.com/krishnarajvr/micro-common/middleware"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -38,13 +41,15 @@ func TestTenant(t *testing.T) {
 			Search: "",
 		}
 
-		mockTenantService.On("List", page).Return(dtos, nil)
+		mockTenantService.On("List", page).Return(dtos, nil, nil)
 
 		// a response recorder for getting written http response
 		rr := httptest.NewRecorder()
 
 		// don't need a middleware as we don't yet have authorized tenant
 		router := gin.Default()
+		cfg := config.AppConfig()
+		router.Use(middleware.LoggerToFile(cfg.Log.LogFilePath, cfg.Log.LogFileName))
 
 		InitRoutes(HandlerConfig{
 			R:             router,
@@ -83,13 +88,14 @@ func TestTenant(t *testing.T) {
 			Search: "",
 		}
 
-		mockTenantService.On("List", page).Return(nil, fmt.Errorf("Some error down call chain"))
+		mockTenantService.On("List", page).Return(nil, nil, fmt.Errorf("Some error down call chain"))
 
 		// a response recorder for getting written http response
 		rr := httptest.NewRecorder()
 
-		// don't need a middleware as we don't yet have authorized tenant
+		cfg := config.AppConfig()
 		router := gin.Default()
+		router.Use(middleware.LoggerToFile(cfg.Log.LogFilePath, cfg.Log.LogFileName))
 
 		InitRoutes(HandlerConfig{
 			R:             router,

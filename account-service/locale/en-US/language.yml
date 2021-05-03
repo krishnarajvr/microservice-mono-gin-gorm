@@ -1,2 +1,14 @@
-hi: "Hi %s"
 intro: "My name is {{.Name}} and I am {{.Age}} years old"
+
+entity_user: "User"
+entity_tenant: "Tenant"
+entity_token: "Token"
+entity_role_permission: "RolePermission"
+
+
+message_not_found: "%s not found"
+message_invalid_id: "Invalid %s Id"
+message_already_exists: "%s already exists"
+message_invalid_data: "Invalid %s"
+
+message_invalid_client_credentials: "Invalid Client Credentials"

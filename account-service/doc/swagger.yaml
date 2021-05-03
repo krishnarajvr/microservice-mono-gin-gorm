@@ -1,5 +1,14 @@
 basePath: /api/v1
 definitions:
+  model.LoginForm:
+    properties:
+      email:
+        example: john@mail.com
+        type: string
+      password:
+        example: john123
+        type: string
+    type: object
   model.TenantDto:
     properties:
       code:
@@ -41,6 +50,33 @@ definitions:
         example: Tenant 1
         type: string
     type: object
+  model.TenantRegisterForm:
+    properties:
+      domain:
+        example: eBook
+        type: string
+      email:
+        example: tenant1@mail.com
+        type: string
+      firstName:
+        example: John
+        type: string
+      lastName:
+        example: Doe
+        type: string
+      name:
+        example: Tenant1
+        type: string
+      password:
+        example: Pass@1
+        type: string
+    type: object
+  model.TokenRefresh:
+    properties:
+      refresh_token:
+        example: eyJhbGcIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTUzNjA2MzQsInJlZfdXVpZCI6ImIyY2FyZWMzNnVzZXJfaWQiOjF9.hv_4EzMc1HG9mJZCGNk0UKnqTveOAjtgIO9Za4tHDBY
+        type: string
+    type: object
   model.UserDto:
     properties:
       createdAt:
@@ -69,30 +105,73 @@ definitions:
     type: object
   model.UserForm:
     properties:
-      code:
-        example: John
-        type: string
-      domain:
-        example: Doe
-        type: string
       email:
         example: john@mail.com
+        type: string
+      firstName:
+        example: John
+        type: string
+      lastName:
+        example: Doe
         type: string
       name:
         example: User 1
         type: string
+      password:
+        example: Pass!23
+        type: string
+    type: object
+  swagdto.Error400:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorBadRequest'
+      status:
+        example: 400
+        type: integer
+    type: object
+  swagdto.Error401:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorUnauthorized'
+      status:
+        example: 401
+        type: integer
+    type: object
+  swagdto.Error403:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorForbidden'
+      status:
+        example: 403
+        type: integer
     type: object
   swagdto.Error404:
     properties:
       data:
         type: object
       error:
-        $ref: '#/definitions/swagdto.ErrorData'
+        $ref: '#/definitions/swagdto.ErrorNotFound'
       status:
         example: 404
         type: integer
     type: object
-  swagdto.ErrorData:
+  swagdto.Error500:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorInternalError'
+      status:
+        example: 500
+        type: integer
+    type: object
+  swagdto.ErrorBadRequest:
     properties:
       code:
         example: BAD_REQUEST
@@ -115,6 +194,135 @@ definitions:
         type: string
       target:
         example: Name
+        type: string
+    type: object
+  swagdto.ErrorForbidden:
+    properties:
+      code:
+        example: ACCESS_DENIED
+        type: string
+      message:
+        example: Forbidden
+        type: string
+    type: object
+  swagdto.ErrorInternalError:
+    properties:
+      code:
+        example: INTERNAL_SERVER_ERROR
+        type: string
+      message:
+        example: Internal server error
+        type: string
+    type: object
+  swagdto.ErrorNotFound:
+    properties:
+      code:
+        example: NOT_FOUND
+        type: string
+      message:
+        example: Resource not found
+        type: string
+    type: object
+  swagdto.ErrorUnauthorized:
+    properties:
+      code:
+        example: ACCESS_DENIED
+        type: string
+      message:
+        example: Unauthorized
+        type: string
+    type: object
+  swagger.ClientCredentialDto:
+    properties:
+      code:
+        example: client 1
+        type: string
+      createdAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        example: 1
+        type: integer
+      name:
+        example: client 1
+        type: string
+      payload:
+        $ref: '#/definitions/swagger.Payload'
+      referenceId:
+        example: user id
+        type: string
+      secret:
+        example: 12-345-567
+        type: string
+      type:
+        example: user
+        type: string
+      updatedAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
+    type: object
+  swagger.ClientCredentialForm:
+    properties:
+      code:
+        example: ClientA
+        type: string
+      isActive:
+        example: 1
+        type: integer
+      name:
+        example: Client A
+        type: string
+      payload:
+        $ref: '#/definitions/swagger.Payload'
+      referenceId:
+        example: client_id
+        type: string
+      type:
+        example: user
+        type: string
+    type: object
+  swagger.ClientCredentialResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagger.ClientCredentialSampleData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagger.ClientCredentialSampleData:
+    properties:
+      client:
+        $ref: '#/definitions/swagger.ClientCredentialDto'
+    type: object
+  swagger.ClientCredentialSampleListData:
+    properties:
+      client:
+        items:
+          $ref: '#/definitions/swagger.ClientCredentialDto'
+        type: array
+    type: object
+  swagger.ClientListCredentialsResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagger.ClientCredentialSampleListData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagger.Payload:
+    properties:
+      key1:
+        type: string
+      key2:
+        type: string
+      key3:
         type: string
     type: object
   swagger.TenantListResponse:
@@ -149,6 +357,19 @@ definitions:
           $ref: '#/definitions/model.TenantDto'
         type: array
     type: object
+  swagger.TokenResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagger.UserTokenData'
+      error:
+        type: object
+      requestId:
+        example: 3b6272b9-1ef1-45e0
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
   swagger.UserListResponse:
     properties:
       data:
@@ -181,25 +402,239 @@ definitions:
           $ref: '#/definitions/model.UserDto'
         type: array
     type: object
-host: 127.0.0.1:8082
+  swagger.UserTokenData:
+    properties:
+      token:
+        $ref: '#/definitions/swagger.UserTokenModel'
+    type: object
+  swagger.UserTokenModel:
+    properties:
+      accessToken:
+        example: eyJhbGciOiJIUzI1NXVCJ9.eyJhY2Nlc30IDIiLCJ0eXBlIjoiY2xpZW50In0.XBjAxzruIT
+        type: string
+      accessTokenExpiry:
+        example: "2021-04-24T08:40:59Z"
+        type: string
+      refreshToken:
+        example: eyJhbGciOiJIUzI54XVCJ54.eyJhY2Nlc30IDIiLCJ0eXBlIjoiY2xpZW5045.XBjAxzru45
+        type: string
+      refreshTokenExpiry:
+        example: "2021-04-21T12:40:59Z"
+        type: string
+      tokenType:
+        example: bearer
+        type: string
+    type: object
+host: localhost:8082
 info:
   contact: {}
-  description: List APIs of Account Service
+  description: List of APIs for Micro Service
   termsOfService: http://swagger.io/terms/
-  title: Account Service API Document
+  title: Micro Service API Document
   version: "1.0"
 paths:
+  /adminLogin:
+    post:
+      parameters:
+      - description: Login Data
+        in: body
+        name: tenant
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.TokenResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Admin Login API
+      tags:
+      - Authentication
+  /clientCredentials:
+    get:
+      consumes:
+      - application/json
+      description: List all existing client credentials
+      parameters:
+      - description: Go to a specific page number. Start with 1
+        in: query
+        name: pageNumber
+        type: integer
+      - description: Go to specific record number. Start with 1. It will override
+          the pageNumber if provided
+        in: query
+        name: pageOffset
+        type: integer
+      - description: Page size for the data
+        in: query
+        name: pageSize
+        type: string
+      - description: 'Page order. Eg: name desc,createdAt desc'
+        in: query
+        name: pageOrder
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.ClientListCredentialsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
+      summary: List all existing client credentials
+      tags:
+      - Client
+    post:
+      consumes:
+      - application/json
+      description: Add a new client credential
+      parameters:
+      - description: ClientCredential Data
+        in: body
+        name: client
+        required: true
+        schema:
+          $ref: '#/definitions/swagger.ClientCredentialForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.ClientListCredentialsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagdto.Error400'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/swagdto.Error403'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
+      summary: Add a new client
+      tags:
+      - Client
+  /clientCredentials/{id}:
+    get:
+      description: Get a specific client credential by id
+      parameters:
+      - description: ClientCredential ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.ClientCredentialResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/swagdto.Error403'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
+      summary: Get client credential
+      tags:
+      - Client
+    patch:
+      description: Update a specific client
+      parameters:
+      - description: ClientCredential ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: ClientCredential Data
+        in: body
+        name: client
+        required: true
+        schema:
+          $ref: '#/definitions/swagger.ClientCredentialForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.ClientCredentialResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagdto.Error400'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/swagdto.Error403'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
+      summary: Update client credential
+      tags:
+      - Client
+  /tenantRegister:
+    post:
+      parameters:
+      - description: Tenant data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.TenantRegisterForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.TenantResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
+      summary: Register tenant
+      tags:
+      - Tenant
   /tenants:
     get:
       consumes:
       - application/json
       description: List all existing tenants
-      parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -211,12 +646,14 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: List all existing tenants
       tags:
       - Tenant
     post:
       parameters:
-      - description: Tenant ID
+      - description: Tenant Data
         in: body
         name: user
         required: true
@@ -233,6 +670,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Add tenant
       tags:
       - Tenant
@@ -255,6 +694,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a tenant
       tags:
       - Tenant
@@ -276,6 +717,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Get a tenant
       tags:
       - Tenant
@@ -303,6 +746,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Patch tenant
       tags:
       - Tenant
@@ -330,19 +775,64 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Update tenant
       tags:
       - Tenant
+  /tokenRefresh:
+    post:
+      parameters:
+      - description: TokenRefresh Data
+        in: body
+        name: tenant
+        required: true
+        schema:
+          $ref: '#/definitions/model.TokenRefresh'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.TokenResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/swagdto.Error404'
+      summary: Token Refresh API
+      tags:
+      - Authentication
   /users:
     get:
       consumes:
       - application/json
       description: List all existing users
       parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
+      - description: User Name
+        in: query
+        name: name
+        type: string
+      - description: User Email
+        in: query
+        name: email
+        type: string
+      - description: Go to a specific page number. Start with 1
+        in: query
+        name: pageNumber
+        type: integer
+      - description: Go to specific record number. Start with 1. It will override
+          the pageNumber if provided
+        in: query
+        name: pageOffset
+        type: integer
+      - description: Page size for the data
+        in: query
+        name: pageSize
+        type: string
+      - description: 'Page order. Eg: name desc,createdAt desc'
+        in: query
+        name: pageOrder
         type: string
       produces:
       - application/json
@@ -351,16 +841,22 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagger.UserListResponse'
-        "404":
-          description: Not Found
+        "401":
+          description: Unauthorized
           schema:
-            $ref: '#/definitions/swagdto.Error404'
+            $ref: '#/definitions/swagdto.Error403'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
       summary: List all existing users
       tags:
       - User
     post:
       parameters:
-      - description: User ID
+      - description: User Data
         in: body
         name: user
         required: true
@@ -377,6 +873,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Add user
       tags:
       - User
@@ -399,6 +897,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a user
       tags:
       - User
@@ -420,6 +920,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Get a user
       tags:
       - User
@@ -430,7 +932,7 @@ paths:
         name: id
         required: true
         type: integer
-      - description: User ID
+      - description: User Data
         in: body
         name: user
         required: true
@@ -447,7 +949,9 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
-      summary: Patch user
+      security:
+      - ApiKeyAuth: []
+      summary: Update(Patch) user
       tags:
       - User
     post:
@@ -457,7 +961,7 @@ paths:
         name: id
         required: true
         type: integer
-      - description: User ID
+      - description: User Data
         in: body
         name: user
         required: true
@@ -474,7 +978,14 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+      security:
+      - ApiKeyAuth: []
       summary: Update user
       tags:
       - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

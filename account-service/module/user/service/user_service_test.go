@@ -3,7 +3,7 @@ package service
 import (
 	"testing"
 
-	"micro/app/locale"
+	"github.com/krishnarajvr/micro-common/locale"
 	"micro/config"
 	"micro/module/user/mocks"
 	"micro/module/user/model"
@@ -16,8 +16,8 @@ func TestUser(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 
 		mockUserResp := &model.User{
-			Name: "User 1",
-			Code: "Code 1",
+			Name:  "User 1",
+			Email: "Email",
 		}
 
 		page := common.Pagination{
@@ -28,12 +28,12 @@ func TestUser(t *testing.T) {
 			Search: "",
 		}
 
-		products := model.Users{mockUserResp}
-		productDtos := products.ToDto()
+		users := model.Users{mockUserResp}
+		userDtos := users.ToDto()
 
 		IUserRepo := new(mocks.IUserRepo)
 
-		IUserRepo.On("List", page).Return(products, nil)
+		IUserRepo.On("List", page).Return(users, nil, nil)
 
 		appConf := config.AppConfig()
 		langLocale := locale.Locale{}
@@ -44,10 +44,10 @@ func TestUser(t *testing.T) {
 			Lang:     lang,
 		})
 
-		u, err := ps.List(page)
+		u, _, err := ps.List(page)
 
 		assert.NoError(t, err)
-		assert.Equal(t, u, productDtos)
+		assert.Equal(t, u, userDtos)
 		IUserRepo.AssertExpectations(t)
 	})
 

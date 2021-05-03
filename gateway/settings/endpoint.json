@@ -1,0 +1,38 @@
+{
+    "accountServiceList": [
+        {
+            "route": "/account/v1/users",
+            "backend": "/api/v1/users"
+        },
+        {
+            "route": "/account/v1/tenants",
+            "backend": "/api/v1/tenants"
+        },
+        {
+            "route": "/account/v1/clientCredentials",
+            "backend": "/api/v1/clientCredentials"
+        }
+    ],
+    "accountServiceWithID": [
+        {
+            "route": "/account/v1/users/{id}",
+            "backend": "/api/v1/users/{id}"
+        },
+        {
+            "route": "/account/v1/tenants/{id}",
+            "backend": "/api/v1/tenants/{id}"
+        }
+    ],
+    "productServiceList": [
+        {
+            "route": "/product/v1/products",
+            "backend": "/api/v1/products"
+        }
+    ],
+    "productServiceWithID": [
+        {
+            "route": "/product/v1/products/{id}",
+            "backend": "/api/v1/products/{id}"
+        }
+    ] 
+}

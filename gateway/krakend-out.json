@@ -1,0 +1,371 @@
+{
+    "version": 2,
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "name": "Micro Gateway",
+    "port": 8080,
+    "extra_config": {"github_com/devopsfaith/krakend-cors":{"allow_credentials":false,"allow_headers":["*"],"allow_methods":["GET","HEAD","POST","PATCH","DELETE","OPTIONS"],"allow_origins":["*"],"debug":true,"expose_headers":["*"],"max_age":"12h"},"github_com/devopsfaith/krakend-gologging":{"format":"default","level":"DEBUG","prefix":"[KRAKEND]","stdout":true,"syslog":true},"github_com/devopsfaith/krakend-opencensus":{"reporting_period":1,"sample_rate":100},"github_com/devopsfaith/krakend/transport/http/server/handler":{"name":["router-plugin"]}},
+    "plugin": {
+        "pattern": ".so",
+        "folder": "./plugins/"
+    },
+    "endpoints": [
+        {
+            "endpoint": "/health",
+            "extra_config": {
+                "github.com/devopsfaith/krakend/proxy": {
+                    "static": {
+                        "data": {
+                            "status": "OK"
+                        },
+                        "strategy": "always"
+                    }
+                }
+            },
+            "backend": [
+                {
+                    "url_pattern": "/",
+                    "host": [
+                        "http://fake-backend"
+                    ]
+                }
+            ]
+        },
+        
+        {
+            "endpoint": "/account/v1/users",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/users",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/account/v1/users",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/users",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        
+        {
+            "endpoint": "/account/v1/tenants",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/tenants",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/account/v1/tenants",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/tenants",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        
+        {
+            "endpoint": "/account/v1/clientCredentials",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/clientCredentials",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/account/v1/clientCredentials",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/clientCredentials",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        
+        
+        {
+            "endpoint": "/account/v1/users/{id}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/users/{id}",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/account/v1/users/{id}",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/users/{id}",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/account/v1/users/{id}",
+            "output_encoding": "no-op",
+            "method": "PATCH",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/users/{id}",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        
+        {
+            "endpoint": "/account/v1/tenants/{id}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/tenants/{id}",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/account/v1/tenants/{id}",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/tenants/{id}",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/account/v1/tenants/{id}",
+            "output_encoding": "no-op",
+            "method": "PATCH",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/tenants/{id}",        
+                    "host": ["http://localhost:8082"] 
+                }            
+            ]
+        },
+        
+        
+        {
+            "endpoint": "/product/v1/products",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/products",        
+                    "host": ["http://localhost:8083"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/product/v1/products",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/products",        
+                    "host": ["http://localhost:8083"] 
+                }            
+            ]
+        },
+        
+        
+        {
+            "endpoint": "/product/v1/products/{id}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/products/{id}",        
+                    "host": ["http://localhost:8083"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/product/v1/products/{id}",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/products/{id}",        
+                    "host": ["http://localhost:8083"] 
+                }            
+            ]
+        },
+        {
+            "endpoint": "/product/v1/products/{id}",
+            "output_encoding": "no-op",
+            "method": "PATCH",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/products/{id}",        
+                    "host": ["http://localhost:8083"] 
+                }            
+            ]
+        },
+        
+        {
+            "endpoint": "account/v1/tenantRegister",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/tenantRegister",
+                    "host": ["http://localhost:8082"]
+                }
+            ]
+        },
+        {
+            "endpoint": "account/v1/adminLogin",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/adminLogin",
+                    "host": ["http://localhost:8082"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/account/v1/token",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/oauth/token",
+                    "host": ["http://localhost:8082"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/account/swagger/{file}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": [
+                "*"
+            ],
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/swagger/{file}",
+                    "host": ["http://localhost:8082"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/product/swagger/{file}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": [
+                "*"
+            ],
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/swagger/{file}",
+                    "host": ["http://localhost:8083"]
+                }
+            ]
+        }
+    ]
+}

@@ -1,19 +1,68 @@
 basePath: /api/v1
 definitions:
-  common.ErrorData:
+  swagdto.Error400:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorBadRequest'
+      status:
+        example: 400
+        type: integer
+    type: object
+  swagdto.Error403:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorAccessDenied'
+      status:
+        example: 403
+        type: integer
+    type: object
+  swagdto.Error404:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorNotFound'
+      status:
+        example: 404
+        type: integer
+    type: object
+  swagdto.Error500:
+    properties:
+      data:
+        type: object
+      error:
+        $ref: '#/definitions/swagdto.ErrorInternalError'
+      status:
+        example: 500
+        type: integer
+    type: object
+  swagdto.ErrorAccessDenied:
+    properties:
+      code:
+        example: ACCESS_DENIED
+        type: string
+      message:
+        example: Access Denied
+        type: string
+    type: object
+  swagdto.ErrorBadRequest:
     properties:
       code:
         example: BAD_REQUEST
         type: string
       details:
         items:
-          $ref: '#/definitions/common.ErrorDetail'
+          $ref: '#/definitions/swagdto.ErrorDetail'
         type: array
       message:
         example: Bad Request
         type: string
     type: object
-  common.ErrorDetail:
+  swagdto.ErrorDetail:
     properties:
       code:
         example: Required
@@ -25,81 +74,201 @@ definitions:
         example: Name
         type: string
     type: object
-  model.ProductDto:
+  swagdto.ErrorInternalError:
     properties:
       code:
-        example: Product1
+        example: INTERNAL_SERVER_ERROR
+        type: string
+      message:
+        example: Internal server error
+        type: string
+    type: object
+  swagdto.ErrorNotFound:
+    properties:
+      code:
+        example: NOT_FOUND
+        type: string
+      message:
+        example: Resource not found
+        type: string
+    type: object
+  swagger.ProductAddData:
+    properties:
+      product:
+        $ref: '#/definitions/swagger.ProductDto'
+    type: object
+  swagger.ProductAddResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagger.ProductAddData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagger.ProductDetailDto:
+    properties:
+      code:
+        example: "10011"
+        type: string
+      createdAt:
+        example: "2021-02-02T02:52:24Z"
         type: string
       description:
-        example: Product description
+        example: product description
         type: string
       id:
         example: 1
         type: integer
+      meta:
+        $ref: '#/definitions/swagger.ProductMeta'
       name:
         example: Product 1
         type: string
+      updatedAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
     type: object
-  model.ProductForm:
+  swagger.ProductDto:
     properties:
       code:
-        example: Product1
+        example: "10011"
+        type: string
+      createdAt:
+        example: "2021-02-02T02:52:24Z"
         type: string
       description:
-        example: Product description
+        example: product description
         type: string
+      id:
+        example: 1
+        type: integer
+      meta:
+        $ref: '#/definitions/swagger.ProductMeta'
+      name:
+        example: Product 1
+        type: string
+      updatedAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
+    type: object
+  swagger.ProductForm:
+    properties:
+      code:
+        example: "1001"
+        type: string
+      description:
+        example: product description
+        type: string
+      isActive:
+        example: 1
+        type: integer
+      meta:
+        $ref: '#/definitions/swagger.ProductMeta'
       name:
         example: Product 1
         type: string
     type: object
-  swagdto.Error404:
+  swagger.ProductListDto:
     properties:
-      data:
-        type: object
-      error:
-        $ref: '#/definitions/common.ErrorData'
-      status:
-        example: 404
+      code:
+        example: "10011"
+        type: string
+      createdAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
+      description:
+        example: product description
+        type: string
+      id:
+        example: 1
         type: integer
+      meta:
+        $ref: '#/definitions/swagger.ProductMeta'
+      name:
+        example: Product 1
+        type: string
+      updatedAt:
+        example: "2021-02-02T02:52:24Z"
+        type: string
     type: object
-  swagdto.ProductListResponse:
+  swagger.ProductListResponse:
     properties:
       data:
-        $ref: '#/definitions/swagdto.ProductSampleListData'
+        $ref: '#/definitions/swagger.ProductSampleListData'
       error:
         type: object
       status:
         example: 200
         type: integer
     type: object
-  swagdto.ProductResponse:
+  swagger.ProductMeta:
+    properties:
+      author:
+        example: AuthorA
+        type: string
+      country:
+        example: USA
+        type: string
+    type: object
+  swagger.ProductPatchForm:
+    properties:
+      code:
+        example: "1001"
+        type: string
+      description:
+        example: product description
+        type: string
+      meta:
+        $ref: '#/definitions/swagger.ProductMeta'
+      name:
+        example: Product 1
+        type: string
+    type: object
+  swagger.ProductResponse:
     properties:
       data:
-        $ref: '#/definitions/swagdto.ProductSampleData'
+        $ref: '#/definitions/swagger.ProductSampleData'
       error:
         type: object
       status:
         example: 200
         type: integer
     type: object
-  swagdto.ProductSampleData:
+  swagger.ProductSampleData:
     properties:
       product:
-        $ref: '#/definitions/model.ProductDto'
+        $ref: '#/definitions/swagger.ProductDetailDto'
     type: object
-  swagdto.ProductSampleListData:
+  swagger.ProductSampleListData:
     properties:
-      products:
+      product:
         items:
-          $ref: '#/definitions/model.ProductDto'
+          $ref: '#/definitions/swagger.ProductListDto'
         type: array
     type: object
-host: 127.0.0.1:8092
+  swagger.ProductUpdateResponse:
+    properties:
+      data:
+        $ref: '#/definitions/swagger.ProductupdateData'
+      error:
+        type: object
+      status:
+        example: 200
+        type: integer
+    type: object
+  swagger.ProductupdateData:
+    properties:
+      product:
+        $ref: '#/definitions/swagger.ProductDto'
+    type: object
+host: localhost:8083
 info:
   contact: {}
-  description: List APIs of ProductManagement Service
+  description: List of APIs for Micro Service
   termsOfService: http://swagger.io/terms/
-  title: ProductManagement Service API Document
+  title: Micro Service API Document
   version: "1.0"
 paths:
   /products:
@@ -108,10 +277,30 @@ paths:
       - application/json
       description: List all existing products
       parameters:
-      - description: Token
-        in: header
-        name: Authorization
-        required: true
+      - description: 'filter the code based value (ex: code=1000)'
+        in: query
+        name: code
+        type: string
+      - description: 'filter the name based value (ex: name=Ja)'
+        in: query
+        name: name
+        type: string
+      - description: Go to a specific page number. Start with 1
+        in: query
+        name: pageNumber
+        type: integer
+      - description: Go to specific record number. Start with 1. It will override
+          the pageNumber if provided
+        in: query
+        name: pageOffset
+        type: integer
+      - description: Page size for the data
+        in: query
+        name: pageSize
+        type: string
+      - description: 'Page order. Eg: name desc,createdAt desc'
+        in: query
+        name: pageOrder
         type: string
       produces:
       - application/json
@@ -119,38 +308,56 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.ProductListResponse'
-        "404":
-          description: Not Found
+            $ref: '#/definitions/swagger.ProductListResponse'
+        "500":
+          description: Internal Server Error
           schema:
-            $ref: '#/definitions/swagdto.Error404'
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
       summary: List all existing products
       tags:
-      - product
+      - Product
     post:
+      consumes:
+      - application/json
+      description: Add a new product
       parameters:
-      - description: Product ID
+      - description: Product Data
         in: body
-        name: user
+        name: product
         required: true
         schema:
-          $ref: '#/definitions/model.ProductForm'
+          $ref: '#/definitions/swagger.ProductForm'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
-        "404":
-          description: Not Found
+            $ref: '#/definitions/swagger.ProductAddResponse'
+        "400":
+          description: Bad Request
           schema:
-            $ref: '#/definitions/swagdto.Error404'
-      summary: Add product
+            $ref: '#/definitions/swagdto.Error400'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/swagdto.Error403'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
+      summary: Add a new product
+      tags:
+      - Product
   /products/{id}:
     delete:
+      description: Delete a specific product by id
       parameters:
-      - description: ID
+      - description: Product ID
         in: path
         name: id
         required: true
@@ -161,15 +368,28 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
+            $ref: '#/definitions/swagger.ProductResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/swagdto.Error403'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a product
+      tags:
+      - Product
     get:
+      description: Get a specific product by id
       parameters:
-      - description: ID
+      - description: Product ID
         in: path
         name: id
         required: true
@@ -180,60 +400,69 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
+            $ref: '#/definitions/swagger.ProductResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/swagdto.Error403'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
       summary: Get a product
+      tags:
+      - Product
     patch:
+      description: Update a specific product
       parameters:
-      - description: ID
+      - description: Product ID
         in: path
         name: id
         required: true
         type: integer
-      - description: Product ID
+      - description: Product Data
         in: body
-        name: user
+        name: product
         required: true
         schema:
-          $ref: '#/definitions/model.ProductForm'
+          $ref: '#/definitions/swagger.ProductPatchForm'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
+            $ref: '#/definitions/swagger.ProductUpdateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagdto.Error400'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/swagdto.Error403'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/swagdto.Error404'
-      summary: Patch product
-    post:
-      parameters:
-      - description: ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Product ID
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.ProductForm'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
+        "500":
+          description: Internal Server Error
           schema:
-            $ref: '#/definitions/swagdto.ProductResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/swagdto.Error404'
-      summary: Update product
+            $ref: '#/definitions/swagdto.Error500'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a product
+      tags:
+      - Product
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

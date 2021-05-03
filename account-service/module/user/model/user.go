@@ -15,6 +15,7 @@ type User struct {
 	Email     string
 	FirstName string
 	LastName  string
+	Password  string
 	IsActive  bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -49,15 +50,50 @@ func (b User) ToDto() *UserDto {
 type UserForm struct {
 	Name      string `json:"name" example:"User 1" valid:"Required;MinSize(2);MaxSize(255)"`
 	Email     string `json:"email" example:"john@mail.com" valid:"Required;Email;"`
-	FirstName string `json:"code" example:"John" valid:"Required;MinSize(2);MaxSize(255)"`
-	LastName  string `json:"domain" example:"Doe" valid:"MaxSize(255)"`
+	FirstName string `json:"firstName" example:"John" valid:"Required;MinSize(2);MaxSize(255)"`
+	LastName  string `json:"lastName" example:"Doe" valid:"MaxSize(255)"`
+	Password  string `json:"password" example:"Pass!23" valid:"MinSize(5);MaxSize(20)"`
+}
+
+type LoginForm struct {
+	Email    string `json:"email" label:"email" example:"john@mail.com" valid:"Required;Email;"`
+	Password string `json:"password" label:"password"  example:"john123" valid:"MinSize(5);MaxSize(20)"`
 }
 
 type UserPatchForm struct {
 	Name      string `json:"name" example:"User 1" valid:"MinSize(2);MaxSize(255)"`
 	Email     string `json:"email" example:"john@mail.com" valid:"Email;"`
-	FirstName string `json:"code" example:"John" valid:"MinSize(2);MaxSize(255)"`
-	LastName  string `json:"domain" example:"Doe" valid:"MaxSize(255)"`
+	FirstName string `json:"firstName" example:"John" valid:"MinSize(2);MaxSize(255)"`
+	LastName  string `json:"lastName" example:"Doe" valid:"MaxSize(255)"`
+}
+
+type UserFilterList struct {
+	Name  string `json:"name" form:"name" example:"John"`
+	Email string `json:"email" form:"email" example:"john@mail.com"`
+}
+
+type AuthorizeData struct {
+	Uri    string `json:"uri" form:"uri" valid:"MinSize(2);`
+	Method string `json:"method" form:"method" valid:"MinSize(2);MaxSize(10)"`
+}
+
+type TokenResponse struct {
+	AccessToken  string `json:"access_token" example:"eyJhbGciOsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NfdXVpZCI6ImIyY2Fik5MmItNGZiZi1.v_4EzMc1HG9mJZCGNk0UKnqTveOAjtgIO9Za4tHDBY"`
+	RefreshToken string `json:"refresh_token" example:"eyJhbGcIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTUzNjA2MzQsInJlZfdXVpZCI6ImIyY2FyZWMzNnVzZXJfaWQiOjF9.hv_4EzMc1HG9mJZCGNk0UKnqTveOAjtgIO9Za4tHDBY"`
+}
+
+type TokenRefresh struct {
+	RefreshToken string `json:"refresh_token" example:"eyJhbGcIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTUzNjA2MzQsInJlZfdXVpZCI6ImIyY2FyZWMzNnVzZXJfaWQiOjF9.hv_4EzMc1HG9mJZCGNk0UKnqTveOAjtgIO9Za4tHDBY"`
+}
+
+type AuthRespose struct {
+	TenantId    string   `json:"tenantId"`
+	UserId      string   `json:"userId"`
+	ReferenceId string   `json:"referenceId"`
+	Type        string   `json:"type"`
+	Subject     string   `json:"subject"`
+	Roles       []string `json:"roles"`
+	Admin       bool     `json:"admin"`
 }
 
 func (bs Users) ToDto() UserDtos {

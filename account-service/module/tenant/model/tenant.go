@@ -47,6 +47,15 @@ type TenantPatchForm struct {
 	Email  string `json:"email" example:"tenant@mail.com" valid:"Email"`
 }
 
+type TenantRegisterForm struct {
+	Name      string `json:"name" example:"Tenant1" valid:"Required;MinSize(5);MaxSize(255)"`
+	Password  string `json:"password" example:"Pass@1" valid:"Required;MinSize(5);MaxSize(255)"`
+	Domain    string `json:"domain" example:"eBook" valid:"Required;MinSize(3);MaxSize(50)"`
+	Email     string `json:"email" example:"tenant1@mail.com" valid:"Required;Email;"`
+	FirstName string `json:"firstName" example:"John" valid:"MinSize(2);MaxSize(255)"`
+	LastName  string `json:"lastName" example:"Doe" valid:"MaxSize(255)"`
+}
+
 func (f *TenantForm) ToModel() (*Tenant, error) {
 	return &Tenant{
 		Name:   f.Name,
@@ -84,4 +93,12 @@ func (bs Tenants) ToDto() TenantDtos {
 	}
 
 	return dtos
+}
+
+func (b TenantRegisterForm) ToTenantForm() *TenantForm {
+	return &TenantForm{
+		Name:   b.Name,
+		Domain: b.Domain,
+		Email:  b.Email,
+	}
 }

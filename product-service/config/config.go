@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/joeshaw/envdecode"
@@ -15,11 +18,12 @@ func init() {
 }
 
 type Conf struct {
-	Debug  bool `env:"DEBUG,required"`
-	Server serverConf
-	Db     dbConf
-	Log    logConf
-	App    appConf
+	Debug   bool `env:"DEBUG,required"`
+	Server  serverConf
+	Db      dbConf
+	Log     logConf
+	App     appConf
+	Gateway gatewayConf
 }
 
 type serverConf struct {
@@ -45,6 +49,20 @@ type dbConf struct {
 type appConf struct {
 	BaseURL string `env:"APP_BASE_URL"`
 	Lang    string `env:"APP_LANG"`
+	Name    string `env:"SERVICE_NAME"`
+	RootDir string
+}
+
+type gatewayConf struct {
+	URL    string `env:"API_GATEWAY_URL"`
+	Prefix string `env:"API_GATEWAY_PREFIX"`
+}
+
+func GetRootDir() string {
+	_, b, _, _ := runtime.Caller(0)
+
+	d := path.Join(path.Dir(b))
+	return filepath.Dir(d)
 }
 
 func AppConfig() *Conf {
@@ -55,12 +73,17 @@ func AppConfig() *Conf {
 	}
 
 	dir, err := os.Getwd()
+
 	if err != nil {
 		fmt.Print("Not able to get current working director")
 	}
 
+	if len(c.App.RootDir) <= 0 {
+		c.App.RootDir = GetRootDir()
+	}
+
 	if len(c.App.Lang) <= 0 {
-		c.App.Lang = "el-GR"
+		c.App.Lang = "en-US"
 	}
 
 	if len(c.App.BaseURL) <= 0 {
@@ -75,7 +98,9 @@ func AppConfig() *Conf {
 		c.Log.LogFileName = "micro.log"
 	}
 
-	fmt.Println(c)
+	if len(c.App.Name) <= 0 {
+		c.App.Name = "MicroService"
+	}
 
 	return &c
 }

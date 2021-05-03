@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  namespace: micro-env
+  labels:
+    app: gateway-config
+data:
+  DEBUG: 'false'
+  SERVER_PORT: '8080'
+  SERVER_TIMEOUT_READ: '5s'
+  SERVER_TIMEOUT_WRITE: '10s'
+  SERVER_TIMEOUT_IDLE: '15s'
+  API_KEY: '1234'
+  PERMISSION_URL: 'http://account-service:8080/api/v1/authorize'
+  ACCOUNT_SERVICE: 'http://account-service:8080'
+  PRODUCT_SERVICE: 'http://product-service:8080'
+  SERVICE_NAME: 'gateway-service'

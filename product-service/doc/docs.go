@@ -27,6 +27,11 @@ var doc = `{
     "paths": {
         "/products": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List all existing products",
                 "consumes": [
                     "application/json"
@@ -35,46 +40,87 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "Product"
                 ],
                 "summary": "List all existing products",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "description": "filter the code based value (ex: code=1000)",
+                        "name": "code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "filter the name based value (ex: name=Ja)",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Go to a specific page number. Start with 1",
+                        "name": "pageNumber",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Go to specific record number. Start with 1. It will override the pageNumber if provided",
+                        "name": "pageOffset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page size for the data",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page order. Eg: name desc,createdAt desc",
+                        "name": "pageOrder",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.ProductListResponse"
+                            "$ref": "#/definitions/swagger.ProductListResponse"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.Error404"
+                            "$ref": "#/definitions/swagdto.Error500"
                         }
                     }
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add a new product",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Add product",
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Add a new product",
                 "parameters": [
                     {
-                        "description": "Product ID",
-                        "name": "user",
+                        "description": "Product Data",
+                        "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ProductForm"
+                            "$ref": "#/definitions/swagger.ProductForm"
                         }
                     }
                 ],
@@ -82,13 +128,25 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.ProductResponse"
+                            "$ref": "#/definitions/swagger.ProductAddResponse"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.Error404"
+                            "$ref": "#/definitions/swagdto.Error400"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
                         }
                     }
                 }
@@ -96,81 +154,73 @@ var doc = `{
         },
         "/products/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a specific product by id",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Product"
                 ],
                 "summary": "Get a product",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/swagdto.ProductResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/swagdto.Error404"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Update product",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
                         "description": "Product ID",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ProductForm"
-                        }
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.ProductResponse"
+                            "$ref": "#/definitions/swagger.ProductResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error403"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
                         }
                     }
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a specific product by id",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Product"
                 ],
                 "summary": "Delete a product",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID",
+                        "description": "Product ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -180,37 +230,58 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.ProductResponse"
+                            "$ref": "#/definitions/swagger.ProductResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error403"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
                         }
                     }
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a specific product",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Patch product",
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Update a product",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID",
+                        "description": "Product ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Product ID",
-                        "name": "user",
+                        "description": "Product Data",
+                        "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ProductForm"
+                            "$ref": "#/definitions/swagger.ProductPatchForm"
                         }
                     }
                 ],
@@ -218,13 +289,31 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.ProductResponse"
+                            "$ref": "#/definitions/swagger.ProductUpdateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error400"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error403"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
                         }
                     }
                 }
@@ -232,7 +321,80 @@ var doc = `{
         }
     },
     "definitions": {
-        "common.ErrorData": {
+        "swagdto.Error400": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorBadRequest"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 400
+                }
+            }
+        },
+        "swagdto.Error403": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorAccessDenied"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 403
+                }
+            }
+        },
+        "swagdto.Error404": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorNotFound"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 404
+                }
+            }
+        },
+        "swagdto.Error500": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorInternalError"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 500
+                }
+            }
+        },
+        "swagdto.ErrorAccessDenied": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "ACCESS_DENIED"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Access Denied"
+                }
+            }
+        },
+        "swagdto.ErrorBadRequest": {
             "type": "object",
             "properties": {
                 "code": {
@@ -242,7 +404,7 @@ var doc = `{
                 "details": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/common.ErrorDetail"
+                        "$ref": "#/definitions/swagdto.ErrorDetail"
                     }
                 },
                 "message": {
@@ -251,7 +413,7 @@ var doc = `{
                 }
             }
         },
-        "common.ErrorDetail": {
+        "swagdto.ErrorDetail": {
             "type": "object",
             "properties": {
                 "code": {
@@ -268,37 +430,136 @@ var doc = `{
                 }
             }
         },
-        "model.ProductDto": {
+        "swagdto.ErrorInternalError": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "string",
-                    "example": "Product1"
+                    "example": "INTERNAL_SERVER_ERROR"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Internal server error"
+                }
+            }
+        },
+        "swagdto.ErrorNotFound": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "NOT_FOUND"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Resource not found"
+                }
+            }
+        },
+        "swagger.ProductAddData": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "$ref": "#/definitions/swagger.ProductDto"
+                }
+            }
+        },
+        "swagger.ProductAddResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagger.ProductAddData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "swagger.ProductDetailDto": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "10011"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
                 },
                 "description": {
                     "type": "string",
-                    "example": "Product description"
+                    "example": "product description"
                 },
                 "id": {
                     "type": "integer",
                     "example": 1
                 },
+                "meta": {
+                    "$ref": "#/definitions/swagger.ProductMeta"
+                },
                 "name": {
                     "type": "string",
                     "example": "Product 1"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
                 }
             }
         },
-        "model.ProductForm": {
+        "swagger.ProductDto": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "string",
-                    "example": "Product1"
+                    "example": "10011"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
                 },
                 "description": {
                     "type": "string",
-                    "example": "Product description"
+                    "example": "product description"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "meta": {
+                    "$ref": "#/definitions/swagger.ProductMeta"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Product 1"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
+                }
+            }
+        },
+        "swagger.ProductForm": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "1001"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "product description"
+                },
+                "isActive": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "meta": {
+                    "$ref": "#/definitions/swagger.ProductMeta"
                 },
                 "name": {
                     "type": "string",
@@ -306,26 +567,43 @@ var doc = `{
                 }
             }
         },
-        "swagdto.Error404": {
+        "swagger.ProductListDto": {
             "type": "object",
             "properties": {
-                "data": {
-                    "type": "object"
+                "code": {
+                    "type": "string",
+                    "example": "10011"
                 },
-                "error": {
-                    "$ref": "#/definitions/common.ErrorData"
+                "createdAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
                 },
-                "status": {
+                "description": {
+                    "type": "string",
+                    "example": "product description"
+                },
+                "id": {
                     "type": "integer",
-                    "example": 404
+                    "example": 1
+                },
+                "meta": {
+                    "$ref": "#/definitions/swagger.ProductMeta"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Product 1"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
                 }
             }
         },
-        "swagdto.ProductListResponse": {
+        "swagger.ProductListResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/swagdto.ProductSampleListData"
+                    "$ref": "#/definitions/swagger.ProductSampleListData"
                 },
                 "error": {
                     "type": "object"
@@ -336,11 +614,44 @@ var doc = `{
                 }
             }
         },
-        "swagdto.ProductResponse": {
+        "swagger.ProductMeta": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string",
+                    "example": "AuthorA"
+                },
+                "country": {
+                    "type": "string",
+                    "example": "USA"
+                }
+            }
+        },
+        "swagger.ProductPatchForm": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "1001"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "product description"
+                },
+                "meta": {
+                    "$ref": "#/definitions/swagger.ProductMeta"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Product 1"
+                }
+            }
+        },
+        "swagger.ProductResponse": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/swagdto.ProductSampleData"
+                    "$ref": "#/definitions/swagger.ProductSampleData"
                 },
                 "error": {
                     "type": "object"
@@ -351,24 +662,54 @@ var doc = `{
                 }
             }
         },
-        "swagdto.ProductSampleData": {
+        "swagger.ProductSampleData": {
             "type": "object",
             "properties": {
                 "product": {
-                    "$ref": "#/definitions/model.ProductDto"
+                    "$ref": "#/definitions/swagger.ProductDetailDto"
                 }
             }
         },
-        "swagdto.ProductSampleListData": {
+        "swagger.ProductSampleListData": {
             "type": "object",
             "properties": {
-                "products": {
+                "product": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ProductDto"
+                        "$ref": "#/definitions/swagger.ProductListDto"
                     }
                 }
             }
+        },
+        "swagger.ProductUpdateResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagger.ProductupdateData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "swagger.ProductupdateData": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "$ref": "#/definitions/swagger.ProductDto"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -385,11 +726,11 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "127.0.0.1:8092",
+	Host:        "localhost:8083",
 	BasePath:    "/api/v1",
 	Schemes:     []string{},
-	Title:       "ProductManagement Service API Document",
-	Description: "List APIs of ProductManagement Service",
+	Title:       "Micro Service API Document",
+	Description: "List of APIs for Micro Service",
 }
 
 type s struct{}

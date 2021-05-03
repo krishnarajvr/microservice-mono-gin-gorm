@@ -1,2 +1,0 @@
-hi: "Hi %s"
-intro: "My name is {{.Name}} and I am {{.Age}} years old"

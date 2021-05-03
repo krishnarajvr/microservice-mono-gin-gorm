@@ -3,7 +3,7 @@ package service
 import (
 	"testing"
 
-	"micro/app/locale"
+	"github.com/krishnarajvr/micro-common/locale"
 	"micro/config"
 	"micro/module/tenant/mocks"
 	"micro/module/tenant/model"

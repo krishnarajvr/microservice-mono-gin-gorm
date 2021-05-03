@@ -1,16 +1,46 @@
-version: '3'
+version: "3"
 services:
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: ./deploy/prod.Dockerfile
+    image: micro-services_gateway
+    env_file:
+      - ./gateway/deploy/.env
+    ports:
+      - 8080:8080
+    command: /bin/sh -c '/micro/bin/init.sh'
+  
+    restart: "no"   
+  account-service:
+    build:
+      context: ./account-service
+      args:
+        - SSH_PRIVATE_KEY
+      dockerfile: ./deploy/prod.Dockerfile
+    image: micro-services_account-service
+    env_file:
+      - ./account-service/deploy/.env
+    ports:
+      - 8082:8080
+    depends_on:
+      - db
+    command: /bin/sh -c 'while ! nc -z db 3306; do sleep 1; done; /micro/bin/init.sh;'
+    restart: always
   product-service:
     build:
       context: ./product-service
-      dockerfile: ./docker/app/Dockerfile
+      args:
+        - SSH_PRIVATE_KEY
+      dockerfile: ./deploy/prod.Dockerfile
+    image: micro-services_product-service
     env_file:
-      - ./product-service/docker/app/.env
+      - ./product-service/deploy/.env
     ports:
-      - 8092:8080
+      - 8082:8080
     depends_on:
       - db
-    command: /bin/sh -c 'while ! nc -z db 3307; do sleep 1; done; ./docker/app/bin/init.sh;'
+    command: /bin/sh -c 'while ! nc -z db 3306; do sleep 1; done; /micro/bin/init.sh;'
     restart: always
   db:
     image: yobasystems/alpine-mariadb:latest
@@ -32,6 +62,5 @@ services:
       - PMA_PORT=3306
     depends_on:
       - db
-
 volumes:
-  mariadb-data:    
+  mariadb-data:

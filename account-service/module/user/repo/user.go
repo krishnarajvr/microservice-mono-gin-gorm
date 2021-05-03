@@ -9,12 +9,13 @@ import (
 )
 
 type IUserRepo interface {
-	List(page common.Pagination) (model.Users, *common.PageResult, error)
-	Get(id int) (*model.User, error)
-	Add(form *model.UserForm) (*model.User, error)
+	List(tenantId int, page common.Pagination, filters model.UserFilterList) (model.Users, *common.PageResult, error)
+	Get(tenantId int, id int) (*model.User, error)
+	Add(form *model.User) (*model.User, error)
 	Update(form *model.UserForm, id int) (*model.User, error)
 	Patch(form *model.UserPatchForm, id int) (*model.User, error)
 	Delete(id int) (*model.User, error)
+	GetByEmail(email string) (*model.User, error)
 }
 
 type UserRepo struct {
@@ -27,16 +28,25 @@ func NewUserRepo(db *gorm.DB) UserRepo {
 	}
 }
 
-func (r UserRepo) List(page common.Pagination) (model.Users, *common.PageResult, error) {
-
+func (r UserRepo) List(tenantId int, page common.Pagination, filters model.UserFilterList) (model.Users, *common.PageResult, error) {
 	users := make([]*model.User, 0)
-
 	var totalCount int64
-	if err := r.DB.Table("users").Count(&totalCount).Error; err != nil {
-		return nil, nil, err
+
+	db := r.DB.Scopes(common.Paginate(page)).
+		Find(&users).
+		Where("tenant_id = ? ", tenantId)
+
+	if len(filters.Name) > 0 {
+		db = db.Where("name like ?", filters.Name)
 	}
 
-	if err := r.DB.Scopes(common.Paginate(page)).Find(&users).Error; err != nil {
+	if len(filters.Email) > 0 {
+		db = db.Where("email like ?", filters.Email)
+	}
+
+	err := db.Find(&users).Count(&totalCount).Error
+
+	if err != nil {
 		return nil, nil, err
 	}
 
@@ -49,9 +59,14 @@ func (r UserRepo) List(page common.Pagination) (model.Users, *common.PageResult,
 	return users, &pageResult, nil
 }
 
-func (r UserRepo) Get(id int) (*model.User, error) {
+func (r UserRepo) Get(tenantId int, id int) (*model.User, error) {
 	user := new(model.User)
-	if err := r.DB.Where("id = ?", id).First(&user).Error; err != nil {
+	err := r.DB.
+		Where("id = ?", id).
+		Where("tenant_id = ? ", tenantId).
+		First(&user).Error
+
+	if err != nil {
 		return nil, err
 	}
 
@@ -67,14 +82,7 @@ func (r UserRepo) Delete(id int) (*model.User, error) {
 	return user, nil
 }
 
-func (r UserRepo) Add(form *model.UserForm) (*model.User, error) {
-	user, err := form.ToModel()
-	//Todo - Get from token
-	user.TenantId = 1
-
-	if err != nil {
-		return nil, err
-	}
+func (r UserRepo) Add(user *model.User) (*model.User, error) {
 
 	if err := r.DB.Create(&user).Error; err != nil {
 		return nil, err
@@ -105,6 +113,15 @@ func (r UserRepo) Patch(form *model.UserPatchForm, id int) (*model.User, error) 
 	}
 
 	if err := r.DB.Where("id = ?", id).Updates(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (r UserRepo) GetByEmail(email string) (*model.User, error) {
+	user := new(model.User)
+	if err := r.DB.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
 

@@ -30,6 +30,7 @@ func main() {
 	}
 
 	command := args[0]
+	
 	switch command {
 	case "create":
 		if err := goose.Run("create", nil, *dir, args[1:]...); err != nil {

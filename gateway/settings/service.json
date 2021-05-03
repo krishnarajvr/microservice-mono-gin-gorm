@@ -1,0 +1,51 @@
+{
+    "extra_config": {
+        "github_com/devopsfaith/krakend-gologging": {
+            "format": "default",
+            "level": "DEBUG",
+            "prefix": "[KRAKEND]",
+            "stdout": true,
+            "syslog": true
+        },
+        "github_com/devopsfaith/krakend-cors": {
+            "allow_origins": [
+                "*"
+            ],
+            "allow_methods": [
+                "GET",
+                "HEAD",
+                "POST",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
+            ],
+            "expose_headers": [
+                "*"
+            ],
+            "max_age": "12h",
+            "allow_headers": [
+                "*"
+            ],
+            "allow_credentials": false,
+            "debug": true
+        },
+        "github_com/devopsfaith/krakend-opencensus": {
+            "sample_rate": 100,
+            "reporting_period": 1
+        },
+        "github_com/devopsfaith/krakend/transport/http/server/handler": {
+            "name": [
+                "router-plugin"
+            ]
+        }
+    },
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "name": "Micro Gateway",
+    "port": 8080,
+    "error_backend_alias" :  {
+        "http_status_code": 404,
+        "http_body": "{\"status\":404}"
+    }
+}

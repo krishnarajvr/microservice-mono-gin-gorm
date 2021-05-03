@@ -23,6 +23,7 @@ func New(conf *config.Conf) (*gorm.DB, error) {
 	}
 
 	var logLevel logger.LogLevel
+	
 	if conf.Debug {
 		logLevel = logger.Info
 	} else {

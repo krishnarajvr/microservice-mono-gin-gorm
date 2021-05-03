@@ -1,0 +1,270 @@
+{
+    "version": 2,
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "name": "{{ .service.name }}",
+    "port": {{ .service.port}},
+    "extra_config": {{ marshal .service.extra_config }},
+    "plugin": {
+        "pattern": ".so",
+        "folder": "./plugins/"
+    },
+    "endpoints": [
+        {
+            "endpoint": "/health",
+            "extra_config": {
+                "github.com/devopsfaith/krakend/proxy": {
+                    "static": {
+                        "data": {
+                            "status": "OK"
+                        },
+                        "strategy": "always"
+                    }
+                }
+            },
+            "backend": [
+                {
+                    "url_pattern": "/",
+                    "host": [
+                        "http://fake-backend"
+                    ]
+                }
+            ]
+        },
+        {{ range .endpoint.accountServiceList }}
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "account-host.tmpl" }} 
+                }            
+            ]
+        },
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "account-host.tmpl" }} 
+                }            
+            ]
+        },
+        {{ end }}
+        {{ range .endpoint.accountServiceWithID }}
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "account-host.tmpl" }} 
+                }            
+            ]
+        },
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "account-host.tmpl" }} 
+                }            
+            ]
+        },
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "PATCH",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "account-host.tmpl" }} 
+                }            
+            ]
+        },
+        {{ end }}
+        {{ range .endpoint.productServiceList }}
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "product-host.tmpl" }} 
+                }            
+            ]
+        },
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "product-host.tmpl" }} 
+                }            
+            ]
+        },
+        {{ end }}
+        {{ range .endpoint.productServiceWithID }}
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "product-host.tmpl" }} 
+                }            
+            ]
+        },
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "product-host.tmpl" }} 
+                }            
+            ]
+        },
+        {
+            "endpoint": "{{ .route }}",
+            "output_encoding": "no-op",
+            "method": "PATCH",
+            "querystring_params": ["*"],
+            "headers_to_pass": ["*"],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "{{ .backend }}",        
+                    {{ include "product-host.tmpl" }} 
+                }            
+            ]
+        },
+        {{ end }}
+        {
+            "endpoint": "account/v1/tenantRegister",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/tenantRegister",
+                    {{ include "account-host.tmpl" }}
+                }
+            ]
+        },
+        {
+            "endpoint": "account/v1/adminLogin",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/adminLogin",
+                    {{ include "account-host.tmpl" }}
+                }
+            ]
+        },
+        {
+            "endpoint": "/account/v1/token",
+            "output_encoding": "no-op",
+            "method": "POST",
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/api/v1/oauth/token",
+                    {{ include "account-host.tmpl" }}
+                }
+            ]
+        },
+        {
+            "endpoint": "/account/swagger/{file}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": [
+                "*"
+            ],
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/swagger/{file}",
+                    {{ include "account-host.tmpl" }}
+                }
+            ]
+        },
+        {
+            "endpoint": "/product/swagger/{file}",
+            "output_encoding": "no-op",
+            "method": "GET",
+            "querystring_params": [
+                "*"
+            ],
+            "headers_to_pass": [
+                "Authorization",
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "encoding": "no-op",
+                    "url_pattern": "/swagger/{file}",
+                    {{ include "product-host.tmpl" }}
+                }
+            ]
+        }
+    ]
+}

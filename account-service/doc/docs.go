@@ -25,8 +25,322 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/adminLogin": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Admin Login API",
+                "parameters": [
+                    {
+                        "description": "Login Data",
+                        "name": "tenant",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.TokenResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientCredentials": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "List all existing client credentials",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Client"
+                ],
+                "summary": "List all existing client credentials",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Go to a specific page number. Start with 1",
+                        "name": "pageNumber",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Go to specific record number. Start with 1. It will override the pageNumber if provided",
+                        "name": "pageOffset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page size for the data",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page order. Eg: name desc,createdAt desc",
+                        "name": "pageOrder",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.ClientListCredentialsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add a new client credential",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Add a new client",
+                "parameters": [
+                    {
+                        "description": "ClientCredential Data",
+                        "name": "client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagger.ClientCredentialForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.ClientListCredentialsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error400"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientCredentials/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a specific client credential by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Get client credential",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ClientCredential ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.ClientCredentialResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a specific client",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Update client credential",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ClientCredential ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "ClientCredential Data",
+                        "name": "client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagger.ClientCredentialForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.ClientCredentialResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error400"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
+                        }
+                    }
+                }
+            }
+        },
+        "/tenantRegister": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Register tenant",
+                "parameters": [
+                    {
+                        "description": "Tenant data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TenantRegisterForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.TenantResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            }
+        },
         "/tenants": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List all existing tenants",
                 "consumes": [
                     "application/json"
@@ -38,15 +352,6 @@ var doc = `{
                     "Tenant"
                 ],
                 "summary": "List all existing tenants",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -63,6 +368,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -72,7 +382,7 @@ var doc = `{
                 "summary": "Add tenant",
                 "parameters": [
                     {
-                        "description": "Tenant ID",
+                        "description": "Tenant Data",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -99,6 +409,11 @@ var doc = `{
         },
         "/tenants/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -131,6 +446,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -172,6 +492,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -204,6 +529,11 @@ var doc = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -245,8 +575,49 @@ var doc = `{
                 }
             }
         },
+        "/tokenRefresh": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Token Refresh API",
+                "parameters": [
+                    {
+                        "description": "TokenRefresh Data",
+                        "name": "tenant",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TokenRefresh"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger.TokenResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error404"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List all existing users",
                 "consumes": [
                     "application/json"
@@ -261,10 +632,39 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "description": "User Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "User Email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Go to a specific page number. Start with 1",
+                        "name": "pageNumber",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Go to specific record number. Start with 1. It will override the pageNumber if provided",
+                        "name": "pageOffset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page size for the data",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page order. Eg: name desc,createdAt desc",
+                        "name": "pageOrder",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -274,15 +674,26 @@ var doc = `{
                             "$ref": "#/definitions/swagger.UserListResponse"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/swagdto.Error404"
+                            "$ref": "#/definitions/swagdto.Error403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/swagdto.Error500"
                         }
                     }
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -292,7 +703,7 @@ var doc = `{
                 "summary": "Add user",
                 "parameters": [
                     {
-                        "description": "User ID",
+                        "description": "User Data",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -319,6 +730,11 @@ var doc = `{
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -351,6 +767,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -367,7 +788,7 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "User ID",
+                        "description": "User Data",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -392,6 +813,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -424,13 +850,18 @@ var doc = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Patch user",
+                "summary": "Update(Patch) user",
                 "parameters": [
                     {
                         "type": "integer",
@@ -440,7 +871,7 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "User ID",
+                        "description": "User Data",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -467,6 +898,19 @@ var doc = `{
         }
     },
     "definitions": {
+        "model.LoginForm": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "john@mail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "john123"
+                }
+            }
+        },
         "model.TenantDto": {
             "type": "object",
             "properties": {
@@ -524,6 +968,44 @@ var doc = `{
                 }
             }
         },
+        "model.TenantRegisterForm": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "example": "eBook"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "tenant1@mail.com"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Tenant1"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "Pass@1"
+                }
+            }
+        },
+        "model.TokenRefresh": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string",
+                    "example": "eyJhbGcIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTUzNjA2MzQsInJlZfdXVpZCI6ImIyY2FyZWMzNnVzZXJfaWQiOjF9.hv_4EzMc1HG9mJZCGNk0UKnqTveOAjtgIO9Za4tHDBY"
+                }
+            }
+        },
         "model.UserDto": {
             "type": "object",
             "properties": {
@@ -563,21 +1045,70 @@ var doc = `{
         "model.UserForm": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "string",
-                    "example": "John"
-                },
-                "domain": {
-                    "type": "string",
-                    "example": "Doe"
-                },
                 "email": {
                     "type": "string",
                     "example": "john@mail.com"
                 },
+                "firstName": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                },
                 "name": {
                     "type": "string",
                     "example": "User 1"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "Pass!23"
+                }
+            }
+        },
+        "swagdto.Error400": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorBadRequest"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 400
+                }
+            }
+        },
+        "swagdto.Error401": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorUnauthorized"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 401
+                }
+            }
+        },
+        "swagdto.Error403": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorForbidden"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 403
                 }
             }
         },
@@ -588,7 +1119,7 @@ var doc = `{
                     "type": "object"
                 },
                 "error": {
-                    "$ref": "#/definitions/swagdto.ErrorData"
+                    "$ref": "#/definitions/swagdto.ErrorNotFound"
                 },
                 "status": {
                     "type": "integer",
@@ -596,7 +1127,22 @@ var doc = `{
                 }
             }
         },
-        "swagdto.ErrorData": {
+        "swagdto.Error500": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "$ref": "#/definitions/swagdto.ErrorInternalError"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 500
+                }
+            }
+        },
+        "swagdto.ErrorBadRequest": {
             "type": "object",
             "properties": {
                 "code": {
@@ -629,6 +1175,193 @@ var doc = `{
                 "target": {
                     "type": "string",
                     "example": "Name"
+                }
+            }
+        },
+        "swagdto.ErrorForbidden": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "ACCESS_DENIED"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Forbidden"
+                }
+            }
+        },
+        "swagdto.ErrorInternalError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "INTERNAL_SERVER_ERROR"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Internal server error"
+                }
+            }
+        },
+        "swagdto.ErrorNotFound": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "NOT_FOUND"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Resource not found"
+                }
+            }
+        },
+        "swagdto.ErrorUnauthorized": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "ACCESS_DENIED"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Unauthorized"
+                }
+            }
+        },
+        "swagger.ClientCredentialDto": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "client 1"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "isActive": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "client 1"
+                },
+                "payload": {
+                    "$ref": "#/definitions/swagger.Payload"
+                },
+                "referenceId": {
+                    "type": "string",
+                    "example": "user id"
+                },
+                "secret": {
+                    "type": "string",
+                    "example": "12-345-567"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "user"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2021-02-02T02:52:24Z"
+                }
+            }
+        },
+        "swagger.ClientCredentialForm": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "ClientA"
+                },
+                "isActive": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Client A"
+                },
+                "payload": {
+                    "$ref": "#/definitions/swagger.Payload"
+                },
+                "referenceId": {
+                    "type": "string",
+                    "example": "client_id"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "user"
+                }
+            }
+        },
+        "swagger.ClientCredentialResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagger.ClientCredentialSampleData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "swagger.ClientCredentialSampleData": {
+            "type": "object",
+            "properties": {
+                "client": {
+                    "$ref": "#/definitions/swagger.ClientCredentialDto"
+                }
+            }
+        },
+        "swagger.ClientCredentialSampleListData": {
+            "type": "object",
+            "properties": {
+                "client": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/swagger.ClientCredentialDto"
+                    }
+                }
+            }
+        },
+        "swagger.ClientListCredentialsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagger.ClientCredentialSampleListData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "swagger.Payload": {
+            "type": "object",
+            "properties": {
+                "key1": {
+                    "type": "string"
+                },
+                "key2": {
+                    "type": "string"
+                },
+                "key3": {
+                    "type": "string"
                 }
             }
         },
@@ -681,6 +1414,25 @@ var doc = `{
                 }
             }
         },
+        "swagger.TokenResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/swagger.UserTokenData"
+                },
+                "error": {
+                    "type": "object"
+                },
+                "requestId": {
+                    "type": "string",
+                    "example": "3b6272b9-1ef1-45e0"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
         "swagger.UserListResponse": {
             "type": "object",
             "properties": {
@@ -729,6 +1481,46 @@ var doc = `{
                     }
                 }
             }
+        },
+        "swagger.UserTokenData": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "$ref": "#/definitions/swagger.UserTokenModel"
+                }
+            }
+        },
+        "swagger.UserTokenModel": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NXVCJ9.eyJhY2Nlc30IDIiLCJ0eXBlIjoiY2xpZW50In0.XBjAxzruIT"
+                },
+                "accessTokenExpiry": {
+                    "type": "string",
+                    "example": "2021-04-24T08:40:59Z"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI54XVCJ54.eyJhY2Nlc30IDIiLCJ0eXBlIjoiY2xpZW5045.XBjAxzru45"
+                },
+                "refreshTokenExpiry": {
+                    "type": "string",
+                    "example": "2021-04-21T12:40:59Z"
+                },
+                "tokenType": {
+                    "type": "string",
+                    "example": "bearer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -745,11 +1537,11 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "127.0.0.1:8082",
+	Host:        "localhost:8082",
 	BasePath:    "/api/v1",
 	Schemes:     []string{},
-	Title:       "Account Service API Document",
-	Description: "List APIs of Account Service",
+	Title:       "Micro Service API Document",
+	Description: "List of APIs for Micro Service",
 }
 
 type s struct{}

@@ -1,9 +1,0 @@
-{
-    "productServicehost": "http://192.168.0.108:8092",
-    "productService": [
-        {
-            "route": "/product/v1/{level1}",
-            "backend": "/api/v1/{level1}"
-        }
-    ]
-}

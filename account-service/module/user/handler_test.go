@@ -10,8 +10,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"micro/config"
+
 	"github.com/gin-gonic/gin"
 	common "github.com/krishnarajvr/micro-common"
+	"github.com/krishnarajvr/micro-common/middleware"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,7 +27,6 @@ func TestUser(t *testing.T) {
 		mockUserResp := &model.UserDto{
 			ID:   1,
 			Name: "User 1",
-			Code: "Code 1",
 		}
 		dtos := model.UserDtos{mockUserResp}
 
@@ -38,13 +40,14 @@ func TestUser(t *testing.T) {
 			Search: "",
 		}
 
-		mockUserService.On("List", page).Return(dtos, nil)
+		mockUserService.On("List", page).Return(dtos, nil, nil)
 
 		// a response recorder for getting written http response
 		rr := httptest.NewRecorder()
 
-		// don't need a middleware as we don't yet have authorized user
+		cfg := config.AppConfig()
 		router := gin.Default()
+		router.Use(middleware.LoggerToFile(cfg.Log.LogFilePath, cfg.Log.LogFileName))
 
 		InitRoutes(HandlerConfig{
 			R:           router,
@@ -55,6 +58,7 @@ func TestUser(t *testing.T) {
 		reqBody, err := json.Marshal(gin.H{
 			"user": "",
 		})
+
 		assert.NoError(t, err)
 
 		// use bytes.NewBuffer to create a reader
@@ -65,10 +69,7 @@ func TestUser(t *testing.T) {
 
 		router.ServeHTTP(rr, request)
 
-		fmt.Println(rr)
-
 		assert.Equal(t, 200, rr.Code)
-
 	})
 
 	t.Run("List user Error", func(t *testing.T) {
@@ -83,13 +84,14 @@ func TestUser(t *testing.T) {
 			Search: "",
 		}
 
-		mockUserService.On("List", page).Return(nil, fmt.Errorf("Some error down call chain"))
+		mockUserService.On("List", page).Return(nil, nil, fmt.Errorf("Some error down call chain"))
 
 		// a response recorder for getting written http response
 		rr := httptest.NewRecorder()
 
-		// don't need a middleware as we don't yet have authorized user
+		cfg := config.AppConfig()
 		router := gin.Default()
+		router.Use(middleware.LoggerToFile(cfg.Log.LogFilePath, cfg.Log.LogFileName))
 
 		InitRoutes(HandlerConfig{
 			R:           router,

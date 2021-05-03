@@ -5,35 +5,55 @@ import (
 
 	"micro/app"
 	"micro/config"
-
-	common "github.com/krishnarajvr/micro-common"
+	"micro/module"
 )
 
-func init() {
-	common.LoadEnv()
-}
-
-// @title ProductManagement Service API Document
-// @version 1.0
-// @description List APIs of ProductManagement Service
-// @termsOfService http://swagger.io/terms/
-
-// @host 127.0.0.1:8092
-// @BasePath /api/v1
 func main() {
+	cfg := config.AppConfig()
 
-	appConf := config.AppConfig()
 	log.Println("Starting server...")
 
 	// initialize data sources
-	ds, err := app.InitDS()
+	dbs, err := app.InitDS(cfg)
 
 	if err != nil {
 		log.Fatalf("Unable to initialize data sources: %v\n", err)
 	}
 
-	//Add dependency injection
-	ginApp, err := app.Inject(ds)
+	//Close the database connection when stopped
+	defer app.Close(dbs)
 
-	ginApp.Run(":" + appConf.Server.Port)
+	//Add dependency injection
+
+	//Public routes that don't have tenant checking
+	excludeList := map[string]interface{}{
+		"/health": "true",
+	}
+	router, err := app.InitRouter(cfg, excludeList)
+
+	if err != nil {
+		log.Fatalf("Unable to initialize routes: %v\n", err)
+	}
+
+	lang, err := app.InitLocale(cfg)
+
+	if err != nil {
+		log.Fatalf("Unable to initialize language locale: %v\n", err)
+	}
+
+	appConfig := app.AppConfig{
+		Router:  router,
+		BaseURL: cfg.App.BaseURL,
+		Lang:    lang,
+		Dbs:     dbs,
+		Cfg:     cfg,
+	}
+
+	module.Inject(appConfig)
+
+	if err != nil {
+		log.Fatalf("Unable to inject dependencies: %v\n", err)
+	}
+
+	router.Run(":" + cfg.Server.Port)
 }

@@ -1,6 +1,7 @@
 package tenant
 
 import (
+	"encoding/json"
 	"log"
 	"micro/module/tenant/model"
 	"micro/module/tenant/service"
@@ -9,12 +10,13 @@ import (
 	"github.com/gin-gonic/gin"
 
 	common "github.com/krishnarajvr/micro-common"
-	logr "github.com/sirupsen/logrus"
+	"github.com/krishnarajvr/micro-common/locale"
 	"github.com/unknwon/com"
 )
 
 type Handler struct {
 	TenantService service.ITenantService
+	Lang          *locale.Locale
 }
 
 // ListTenants godoc
@@ -23,19 +25,12 @@ type Handler struct {
 // @Tags Tenant
 // @Accept  json
 // @Produce  json
-// @Param Authorization header string true "Token"
+// @Security ApiKeyAuth
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagger.TenantListResponse
 // @Router /tenants [get]
 func (h *Handler) ListTenants(c *gin.Context) {
-
 	page := common.Paginator(c)
-	for k, vals := range c.Request.Header {
-		logr.Infof("%s", k)
-		for _, v := range vals {
-			logr.Infof("\t%s", v)
-		}
-	}
 
 	tenants, err := h.TenantService.List(page)
 
@@ -46,18 +41,17 @@ func (h *Handler) ListTenants(c *gin.Context) {
 	}
 
 	common.SuccessResponse(c, "tenants", tenants)
-
 }
 
 // @Summary Get a tenant
 // @Produce  json
 // @Tags Tenant
 // @Param id path int true "ID"
+// @Security ApiKeyAuth
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [get]
 func (h *Handler) GetTenant(c *gin.Context) {
-
 	id := com.StrTo(c.Param("id")).MustInt()
 
 	valid := validation.Validation{}
@@ -77,10 +71,47 @@ func (h *Handler) GetTenant(c *gin.Context) {
 	common.SuccessResponse(c, "tenant", tenant)
 }
 
+// @Summary Register tenant
+// @Produce  json
+// @Tags Tenant
+// @Param user body model.TenantRegisterForm true "Tenant data"
+// @Security ApiKeyAuth
+// @Failure 404 {object} swagdto.Error404
+// @Success 200 {object} swagger.TenantResponse
+// @Router /tenantRegister [post]
+func (h *Handler) RegisterTenant(c *gin.Context) {
+	log := c.MustGet("log").(*common.MicroLog)
+	var form model.TenantRegisterForm
+
+	ok, errorData := common.ValidateForm(c, &form)
+	if !ok {
+		common.ErrorResponse(c, errorData)
+		return
+	}
+
+	tenant, err := h.TenantService.Register(&form)
+	if err != nil {
+		log.Message(err)
+		errorCode := common.CheckDbError(err)
+
+		if errorCode == common.ALREADY_EXISTS {
+			common.BadRequestWithMessage(c, h.Lang.Get("message_already_exists", "Tenant"))
+			return
+		}
+
+		common.InternalServerError(c, h.Lang.Get("message_internal_error", ""))
+
+		return
+	}
+
+	common.SuccessResponse(c, "tenant", tenant)
+}
+
 // @Summary Add tenant
 // @Produce  json
 // @Tags Tenant
-// @Param user body model.TenantForm true "Tenant ID"
+// @Security ApiKeyAuth
+// @Param user body model.TenantForm true "Tenant Data"
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagger.TenantResponse
 // @Router /tenants [post]
@@ -106,12 +137,12 @@ func (h *Handler) AddTenant(c *gin.Context) {
 // @Produce  json
 // @Tags Tenant
 // @Param id path int true "ID"
+// @Security ApiKeyAuth
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [post]
 func (h *Handler) UpdateTenant(c *gin.Context) {
-
 	id := com.StrTo(c.Param("id")).MustInt()
 	valid := validation.Validation{}
 	valid.Min(id, 1, "id")
@@ -142,12 +173,12 @@ func (h *Handler) UpdateTenant(c *gin.Context) {
 // @Produce  json
 // @Tags Tenant
 // @Param id path int true "ID"
+// @Security ApiKeyAuth
 // @Param user body model.TenantForm true "Tenant ID"
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [patch]
 func (h *Handler) PatchTenant(c *gin.Context) {
-
 	id := com.StrTo(c.Param("id")).MustInt()
 	valid := validation.Validation{}
 	valid.Min(id, 1, "id")
@@ -178,11 +209,11 @@ func (h *Handler) PatchTenant(c *gin.Context) {
 // @Produce  json
 // @Tags Tenant
 // @Param id path int true "ID"
+// @Security ApiKeyAuth
 // @Failure 404 {object} swagdto.Error404
 // @Success 200 {object} swagger.TenantResponse
 // @Router /tenants/{id} [delete]
 func (h *Handler) DeleteTenant(c *gin.Context) {
-
 	id := com.StrTo(c.Param("id")).MustInt()
 	valid := validation.Validation{}
 	valid.Min(id, 1, "id")
@@ -199,4 +230,30 @@ func (h *Handler) DeleteTenant(c *gin.Context) {
 	}
 
 	common.SuccessResponse(c, "tenant", tenant)
+}
+
+//GetJwks - Return Keys for JWT
+func (h *Handler) GetJwks(c *gin.Context) {
+	//Todo - Get values from env or external file
+	keys := `{"keys": [
+		{
+			"kty": "oct",
+			"alg": "A128KW",
+			"k": "GawgguFyGrWKav7AX4VKUg",
+			"kid": "sim1"
+		},
+		{
+			"kty": "oct",
+			"k": "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow",
+			"kid": "sim2",
+			"alg": "HS256"
+		}
+	]}`
+
+	var result map[string]interface{}
+
+	// Unmarshal or Decode the JSON to the interface.
+	json.Unmarshal([]byte(keys), &result)
+
+	c.JSON(200, result)
 }

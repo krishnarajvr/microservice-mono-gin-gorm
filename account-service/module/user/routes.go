@@ -1,18 +1,13 @@
 package user
 
-import (
-	"log"
-)
-
 //InitRoutes for the module
 func InitRoutes(c HandlerConfig) {
 	h := Handler{
 		UserService: c.UserService,
+		Lang:        c.Lang,
 	}
-
+	//Set api group
 	g := c.R.Group(c.BaseURL)
-
-	log.Println("Setting handler")
 
 	g.GET("/users/:id", h.GetUser)
 	g.POST("/users/:id", h.UpdateUser)
@@ -20,4 +15,7 @@ func InitRoutes(c HandlerConfig) {
 	g.DELETE("/users/:id", h.DeleteUser)
 	g.POST("/users", h.AddUser)
 	g.GET("/users", h.ListUsers)
+	g.POST("/adminLogin", h.AdminLogin)
+	g.POST("/tokenRefresh", h.TokenRefresh)
+	g.POST("/authorize", h.Authorize)
 }

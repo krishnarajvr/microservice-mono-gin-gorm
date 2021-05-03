@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: micro-env
+spec:
+  selector:
+    matchLabels:
+      app: gateway
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: GATEWAY_IMAGE
+        command:
+           - /bin/sh 
+           - -c
+           - /micro/bin/init.sh        
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: gateway-config
+        - secretRef:
+            name: gateway-secret
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "400m"
+
+

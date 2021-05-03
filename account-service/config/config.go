@@ -1,9 +1,10 @@
 package config
 
 import (
-	"fmt"
 	"log"
-	"os"
+	"path"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/joeshaw/envdecode"
@@ -15,11 +16,14 @@ func init() {
 }
 
 type Conf struct {
-	Debug  bool `env:"DEBUG,required"`
-	Server serverConf
-	Db     dbConf
-	Log    logConf
-	App    appConf
+	Debug   bool `env:"DEBUG,required"`
+	Server  serverConf
+	Db      dbConf
+	Log     logConf
+	App     appConf
+	Gateway gatewayConf
+	Cache   cacheConf
+	Token   tokenConf
 }
 
 type serverConf struct {
@@ -42,9 +46,39 @@ type dbConf struct {
 	DbName   string `env:"DB_NAME,required"`
 }
 
+type cacheConf struct {
+	Host     string `env:"REDIS_HOST"`
+	Username string `env:"REDIS_USER"`
+	Password string `env:"REDIS_PASS"`
+}
+
+type tokenConf struct {
+	AccessSecret        string `env:"ACCESS_SECRET"`
+	RefreshSecret       string `env:"REFRESH_SECRET"`
+	AdminAccessExpiry   int    `env:"ADMIN_ACCESS_EXPIRY"`   //In Minutes
+	AdminRefreshExpiry  int    `env:"ADMIN_REFRESH_EXPIRY"`  //In Minutes
+	ClientAccessExpiry  int    `env:"CLIENT_ACCESS_EXPIRY"`  //In Minutes
+	ClientRefreshExpiry int    `env:"CLIENT_REFRESH_EXPIRY"` //In Minutes
+}
+
 type appConf struct {
-	BaseURL string `env:"APP_BASE_URL"`
-	Lang    string `env:"APP_LANG"`
+	BaseURL     string `env:"APP_BASE_URL"`
+	Lang        string `env:"APP_LANG"`
+	Name        string `env:"SERVICE_NAME"`
+	RootDir     string `env:"ROOT_DIR"`
+	NewrelicKey string `env:"NEWRELIC_KEY"`
+}
+
+type gatewayConf struct {
+	URL    string `env:"API_GATEWAY_URL"`
+	Prefix string `env:"API_GATEWAY_PREFIX"`
+}
+
+func GetRootDir() string {
+	_, b, _, _ := runtime.Caller(0)
+
+	d := path.Join(path.Dir(b))
+	return filepath.Dir(d)
 }
 
 func AppConfig() *Conf {
@@ -54,13 +88,12 @@ func AppConfig() *Conf {
 		log.Fatalf("Failed to decode: %s", err)
 	}
 
-	dir, err := os.Getwd()
-	if err != nil {
-		fmt.Print("Not able to get current working director")
+	if len(c.App.RootDir) <= 0 {
+		c.App.RootDir = GetRootDir()
 	}
 
 	if len(c.App.Lang) <= 0 {
-		c.App.Lang = "el-GR"
+		c.App.Lang = "en-US"
 	}
 
 	if len(c.App.BaseURL) <= 0 {
@@ -68,14 +101,33 @@ func AppConfig() *Conf {
 	}
 
 	if len(c.Log.LogFilePath) <= 0 {
-		c.Log.LogFilePath = dir + "/log"
+		c.Log.LogFilePath = c.App.RootDir + "/log"
 	}
 
 	if len(c.Log.LogFileName) <= 0 {
 		c.Log.LogFileName = "micro.log"
 	}
 
-	fmt.Println(c)
+	if len(c.App.Name) <= 0 {
+		c.App.Name = "MicroService"
+	}
+
+	//Access And Refresh Token Expiry in minutes
+	if c.Token.AdminAccessExpiry == 0 {
+		c.Token.AdminAccessExpiry = 60 * 2
+	}
+
+	if c.Token.AdminRefreshExpiry == 0 {
+		c.Token.AdminRefreshExpiry = 60 * 24 * 2
+	}
+
+	if c.Token.ClientAccessExpiry == 0 {
+		c.Token.ClientAccessExpiry = 60 * 3
+	}
+
+	if c.Token.ClientRefreshExpiry == 0 {
+		c.Token.ClientRefreshExpiry = 60 * 24 * 3
+	}
 
 	return &c
 }

@@ -1,16 +1,16 @@
-.PHONY: docs run
+.PHONY: doc run test mock load-env test-tenant
 
-# Sample configs
-PWD = $(shell pwd)
-MPATH = $(PWD)/migrations
-PORT = 5432
+SERVICE_NAME=Product-Service
 
-# Default number of migrations to execute up or down
-N = 1
+export SERVICE_NAME
 
-docs:
+doc:
 	@echo "---Generate doc files---"
-	swag init -g cmd/api/main.go -o doc
+	swag init -g module/module.go -o doc 
+
+doc-dep:
+	@echo "---Generate doc files---"
+	swag init -g cmd/api/main.go -o doc  
 
 migrate-create:
 	@echo "---Creating migration files---"
@@ -26,15 +26,27 @@ migrate-force:
 	go run cmd/migrate/main.go force $(VERSION)
 
 run:
-	go run cmd/api/main.go
+	go run cmd/api/main.go 
 
+load-env:
+  	export $(cat .env | xargs) && echo $DEBUG
+	  
 test:
-	go test -v ./handler
-	go test -v ./service
+	go test -v ./module/*/*/
+
+test-cover:
+	go test -v ./module/product/service -cover
+	go test -v ./module/product -cover
+
+test-vendor:	
+	go test -v ./module/product/service
+	go test -v ./module/product
+
+test-participant:	
+	go test -v ./module/participant/service
+	go test -v ./module/participant
+
 mock:
-	mockery --dir=service --name=IProductService  --output=service/mocks
-	mockery --dir=repo --name=IProductRepo  --output=repo/mocks
-docker-build:
-	sudo docker build -t microapp:v1 -f docker/app/Dockerfile .
-docker-run:
-	sudo docker start --publish 8092:8080 --name micro-app-v1 microapp:v1
+	mockery --dir=module/product/service --name=IProductService  --output=module/product/mocks
+	mockery --dir=module/product/repo --name=IProductRepo  --output=module/product/mocks
+	
