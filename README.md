@@ -31,7 +31,7 @@ go get -u github.com/vektra/mockery/cmd/mockery
 - [x] GORM Integration
 - [x] Dependency Injection
 - [x] Swagger docs 
-- [x] Seperate handler, service, repository(repo), model
+- [x] Separate handler, service, repository(repo), model
 - [x] Multi language support
 - [x] Json logger 
 - [x] Makefile for commands
