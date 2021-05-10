@@ -52,8 +52,9 @@ Refer : https://www.krakend.io/docs/configuration/flexible-config/
 ```
 make build
 ```
+Make sure current directory is ./gateway . Not the plugin directory. ( ``` cd ../../ ``` )
 
-It will generate krakend-out.json file with final configuration from the templates and settings.
+It will generate krakend-out.json file with final configuration from the templates and settings. 
 
 ### Start the gateway
 
