@@ -110,7 +110,7 @@ make test
 
 ### Swagger
 - Access the url http://localhost:8082/swagger/index.html 
-- or through gateway once krakend is started http://localhost:8002/account/swagger/index.html 
+- or through gateway once krakend is started http://localhost:8080/account/swagger/index.html 
 
 Same steps can be followed for product-service.  For gateway steps are different. Please refere readme.md for gateway
 
