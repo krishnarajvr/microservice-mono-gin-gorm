@@ -136,7 +136,7 @@ Can use the same user email and password for /adminLogin api
 
 ## Folder Structure
 ```sh
-├── app  # App Intitialization
+├── app  # App Initialization
 │   ├── app.go
 │   └── database
 │       ├── db
