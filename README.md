@@ -61,35 +61,30 @@ Which act as a singe entrypoint for all the services
 - Handle ratelimit, Circuit breaker and many more
 
 #### Common Library
-- Common functionality shared accross the microserices
+- Common functionality shared accross the microserices , Refer [micro-common](https://github.com/krishnarajvr/micro-common)
 
-###  Go to specific microservice
+#### Running Application
+
+Go to the folders ```./gateway``` ```./account-service``` ```./product-service``` and follow the readme.md files
+
+###  Eg: Build Account microservice
 ```sh
  cd account-service
 ```
 
-###  To setup packages locally
+###  Setup packages locally
 ```sh
  go mod vendor
 ```
 
-
-### Change the config in .env for database and migrate
+### Change the config in .env for database and migrate the tables
 ```sh
 make migrate-up
-
-or
-
-go run cmd/migrate/main.go up
 ```
 
 ###  Generate API document to the ./doc folder using <strong>swag cli</strong>
 ```sh
  make doc
- 
- or
- 
- swag init -g cmd/api/main.go -o doc
 ```
 
 Swagger docs will be available at /swagger/index.html of the api path
@@ -114,7 +109,10 @@ make test
 ```
 
 ### Swagger
-- Access the url http://localhost:8082/swagger/index.html
+- Access the url http://localhost:8082/swagger/index.html 
+- or through gateway once krakend is started http://localhost:8002/account/swagger/index.html 
+
+Same steps can be followed for product-service.  For gateway steps are different. Please refere readme.md for gateway
 
 ### Useful go commands
 ```sh
@@ -130,7 +128,7 @@ If Docker and Docker compose installed. Run below command from root directory
 sudo docker-compose up
 ```
 
-### Create an account
+### Create an account that can be used for /adminLogin api for token generation. Refer account service swagger.
 ```
 curl -X POST "https://localhost:8080/account/v1/tenantRegister" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{  \"domain\": \"eBook\",  \"email\": \"tenant1@mail.com\",  \"firstName\": \"John\",  \"lastName\": \"Doe\",  \"name\": \"Tenant1\",  \"password\": \"Pass@1\"}"
 ```
