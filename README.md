@@ -24,24 +24,23 @@ go get -u github.com/vektra/mockery/cmd/mockery
 
 ## Featues
 
+- [x] Multi tenancy support
+- [x] Scalable folder structure
 - [x] Config using .env
 - [x] Database migration 
 - [x] GORM Integration
 - [x] Dependency Injection
-- [x] Swagger docs
-- [x] Repository
-- [x] Seperate service
-- [x] Seperate handler
-- [x] Mono Repo
-- [x] Multi language
-- [x] Json logger
+- [x] Swagger docs 
+- [x] Seperate handler, service, repository(repo), model
+- [x] Multi language support
+- [x] Json logger 
 - [x] Makefile for commands
 - [x] Mock object integration 
 - [x] Unit Test
 - [x] Integration Test
 - [x] Standard request and response and errors
 - [x] Common form validation 
-- [x] Health endpoint
+- [ ] Health endpoint
 - [x] Krakend Gateway integration
 - [x] Common error messages
 - [x] Docker
