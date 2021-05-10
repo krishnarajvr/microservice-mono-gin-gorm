@@ -13,7 +13,7 @@
 
 ### Steps
 
-Install Kradend binary locally
+Build Kradend binary locally
 
 
 ```
@@ -28,6 +28,8 @@ go mod vendor
 make build
 
 ```
+
+Copy the kradend binary to  ```{GOPATH}/bin```  path once created.
 
 ## Build Plugins
 
@@ -51,9 +53,11 @@ Refer : https://www.krakend.io/docs/configuration/flexible-config/
 make build
 ```
 
+It will generate krakend-out.json file with final configuration from the templates and settings.
+
 ### Start the gateway
 
-#### Change the configurations in Makefile as per the setup
+#### Change the configurations in Makefile as per the setup of other services
 ```
 PERMISSION_URL=http://localhost:8082/api/v1/authorize
 ACCOUNT_SERVICE=http://localhost:8082
@@ -66,4 +70,6 @@ PRODUCT_SERVICE=http://localhost:8083
 make run
 ```
 
-Note : check ```{GOPATH}/bin``` contain krakend binary
+If there is any configuration change in krakend.json, It need to build the chagnes again. Refer Makefile for the commands that is running.
+
+Note : check ```{GOPATH}/bin``` should contain krakend binary as per the krakend-ce build
