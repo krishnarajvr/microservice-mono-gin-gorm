@@ -15,13 +15,6 @@ go get -u github.com/swaggo/swag/cmd/swag
 go get -u github.com/vektra/mockery/cmd/mockery
 
 ```
-## Run the application
-
-```
-    go mod vendor
-    make run  
-```
-
 ## Featues
 
 - [x] Multi tenancy support
@@ -61,6 +54,13 @@ Which act as a singe entrypoint for all the services
 
 #### Common Library
 - Common functionality shared accross the microserices , Refer [micro-common](https://github.com/krishnarajvr/micro-common)
+
+#### Account Service
+- Manage tenants, users, authentication and authrorization
+
+#### Product Service
+- Manage product catalog. Demo purpose
+
 
 #### Running Application
 
