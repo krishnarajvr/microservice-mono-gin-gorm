@@ -70,6 +70,6 @@ PRODUCT_SERVICE=http://localhost:8083
 make run
 ```
 
-If there is any configuration change in krakend.json, It need to build the chagnes again. Refer Makefile for the commands that is running.
+If there is any configuration change in krakend.json, It need to build the chagnes again using ``` make build ``` in gateway folder. Refer Makefile for the commands that is running.
 
 Note : check ```{GOPATH}/bin``` should contain krakend binary as per the krakend-ce build
