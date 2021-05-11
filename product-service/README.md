@@ -13,10 +13,12 @@
 
 ## Steps
 
-### Change the config in .env for database and other configuration
+### Coniguration
+Change the config in .env for database and other configuration
 
 
-### Create a migration file - if required
+### Database Migration
+Create a migration file - if required
 
 ```
 make migrate-create NAME=create-product
@@ -34,7 +36,8 @@ Modify the migration sql once created in migration folder
 make migrate-up
 ```
 
-###  Generate API document to the ./doc folder using <strong>swag cli</strong>
+### Swagger Document  
+Generate API document to the ./doc folder using <strong>swag cli</strong>
 ```sh
  make doc
 ```
@@ -46,12 +49,14 @@ make run
 
 Make sure you run ```make migrate-up``` before the running
 
-###  Generate mock files
+### Testing
+
+Generate mock files
 ```sh
 make mock 
 ```
 
-###  Test service
+Test service
 ```sh
 make test 
 ```
