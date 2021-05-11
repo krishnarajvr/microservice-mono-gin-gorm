@@ -18,31 +18,29 @@ Change the config in .env for database and other configuration
 
 
 ### Database Migration
-Create a migration file - if required
 
-```
-make migrate-create NAME=create-product
-
-OR
-
-go run cmd/migrate/main.go create create-product sql
-
-```
-
-Modify the migration sql once created in migration folder
-
+Existing migrations
 
 ```sh
 make migrate-up
 ```
+Create a migration file - if required
+
+```
+make migrate-create NAME=create-product
+```
+Modify the migration sql(create-product-1123213.sql) once created in migration folder and then run again ```make migrate-up```.
+
 
 ### Swagger Document  
+
 Generate API document to the ./doc folder using <strong>swag cli</strong>
 ```sh
  make doc
 ```
 
 ###  Run service
+
 ```sh
 make run 
 ```
