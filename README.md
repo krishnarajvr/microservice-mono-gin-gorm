@@ -1,5 +1,4 @@
-# Golang Microservices using Gin GORM Swagger Docker
-
+# Scalable Golang Microservices
 ## Requirements
 
 * Golang - 1.5 or higher recommended
