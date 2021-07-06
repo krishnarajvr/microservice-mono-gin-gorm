@@ -1,7 +1,7 @@
 # Scalable Golang Microservices
 ## Requirements
 
-* Golang - 1.5 or higher recommended
+* Golang - 1.15 or higher recommended
 * Mysql - 8.0  or higher
 * [Swag cli](https://github.com/swaggo/swag)  - For generating swagger docs
 * [Mockery](https://github.com/vektra/mockery) - For generating mock classes for testing
